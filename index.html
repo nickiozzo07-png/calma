@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>calma° — italian calm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Serif+Display:ital@0;1&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --g900: #1A2E1A;
+  --g800: #243420;
+  --g700: #2E4228;
+  --g600: #3A5235;
+  --g500: #4C6847;
+  --g400: #6A8C65;
+  --g300: #8FAE8A;
+  --g200: #ADC4A8;
+  --g100: #D4E4D0;
+  --g50:  #EDF5EB;
+  --gold: #B8924A;
+  --gold2: #D4AF72;
+  --cream: #FAF7F0;
+  --cream2: #F4EFE3;
+  --cream3: #E8E0CE;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--g900);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--g600); }
+
+/* ─── CURSOR ─── */
+#cur { width:8px; height:8px; background:var(--g600); border-radius:50%; position:fixed; top:0;left:0; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+#cur-ring { width:32px; height:32px; border:1px solid var(--g400); border-radius:50%; position:fixed; top:0;left:0; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width 0.3s,height 0.3s,opacity 0.3s; opacity:0.5; }
+body * { cursor: none !important; }
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 22px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.5s, backdrop-filter 0.5s;
+}
+
+nav.scrolled {
+  background: rgba(250,247,240,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(58,82,53,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 21px;
+  text-transform: lowercase;
+  color: var(--g800);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.nav-logo sup { color: var(--gold); font-size: 0.55em; }
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(26,46,26,0.4);
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--g600); }
+
+.nav-cta {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--cream);
+  background: var(--g700);
+  padding: 10px 22px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.nav-cta:hover { background: var(--g900); }
+
+/* ═══════════════════════════════════════════════
+   HERO — FULL BLEED EDITORIAL
+═══════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 72px;
+}
+
+/* Grain */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 6%;
+  left: 48%;
+  width: 42%;
+  height: 62%;
+  background: linear-gradient(155deg, var(--g500) 0%, var(--g900) 100%);
+  z-index: 0;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 1.4s cubic-bezier(0.16,1,0.3,1);
+}
+.hero-bg.in { transform: scaleY(1); }
+
+/* Cross markers */
+.x-mark {
+  position: absolute;
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 20px;
+  color: rgba(58,82,53,0.18);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease 1.2s;
+}
+.x-mark.in { opacity: 1; }
+.x1 { top: 14%; left: 3.5%; }
+.x2 { top: 42%; right: 5%; }
+.x3 { bottom: 28%; left: 56%; }
+
+/* Annotations */
+.hero-ann {
+  position: absolute;
+  font-size: 9.5px;
+  line-height: 1.7;
+  color: rgba(26,46,26,0.38);
+  max-width: 175px;
+  font-weight: 300;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 1.2s ease 1.4s;
+}
+.hero-ann.in { opacity: 1; }
+.ann-r1 { top: 10%; right: 5%; text-align: right; }
+.ann-r2 { top: 54%; right: 4%; text-align: right; }
+.ann-l1 { bottom: 22%; left: 4%; }
+
+/* Main title */
+.hero-title-wrap {
+  position: relative;
+  z-index: 3;
+  padding: 0 52px;
+}
+.hero-t {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: lowercase;
+  line-height: 0.87;
+  letter-spacing: -0.03em;
+  font-size: clamp(88px, 22vw, 260px);
+}
+.hero-t1 {
+  color: var(--g800);
+  opacity: 0;
+  transform: translateY(70px);
+  transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s;
+}
+.hero-t2 {
+  color: var(--g600);
+  opacity: 0;
+  transform: translateY(70px);
+  transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1) 0.25s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.25s;
+}
+.hero-t1.in, .hero-t2.in { opacity: 1; transform: translateY(0); }
+.hero-t sup { color: var(--gold); font-size: 0.32em; vertical-align: super; }
+
+/* Hero bottom */
+.hero-foot {
+  position: relative;
+  z-index: 3;
+  padding: 36px 52px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 1s ease 1s;
+}
+.hero-foot.in { opacity: 1; }
+
+.hero-tagline {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.8vw, 20px);
+  color: rgba(36,52,32,0.48);
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.hero-pills {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.hero-pill {
+  font-size: 8px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(58,82,53,0.35);
+  font-weight: 300;
+}
+
+/* ─── SCROLL HINT ─── */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 52px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 1s ease 1.6s;
+}
+.scroll-hint.in { opacity: 1; }
+.sh-line {
+  width: 40px;
+  height: 1px;
+  background: var(--g400);
+  position: relative;
+  overflow: hidden;
+}
+.sh-line::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: var(--gold);
+  animation: shSlide 2s ease-in-out 2s infinite;
+}
+@keyframes shSlide {
+  0%  { left: -100%; }
+  50% { left: 0; }
+  100%{ left: 100%; }
+}
+.sh-text {
+  font-size: 8px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(58,82,53,0.35);
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════════════ */
+.marquee-wrap {
+  background: var(--g900);
+  overflow: hidden;
+  border-top: 1px solid rgba(244,239,227,0.04);
+  border-bottom: 1px solid rgba(244,239,227,0.04);
+  padding: 20px 0;
+}
+.marquee-track {
+  display: inline-flex;
+  gap: 72px;
+  white-space: nowrap;
+  animation: marquee 22s linear infinite;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.mq-item {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 44px;
+  text-transform: lowercase;
+  color: rgba(244,239,227,0.06);
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.mq-item.gold { color: rgba(184,146,74,0.15); }
+.mq-sep { color: rgba(184,146,74,0.08) !important; font-size: 28px !important; }
+
+/* ═══════════════════════════════════════════════
+   SECTIONS — shared
+═══════════════════════════════════════════════ */
+.sec {
+  padding: 128px 52px;
+  border-bottom: 1px solid rgba(58,82,53,0.08);
+  position: relative;
+}
+.sec-dark { background: var(--g800); border-color: rgba(244,239,227,0.04); }
+.sec-deep { background: var(--g900); border-color: rgba(244,239,227,0.04); }
+.sec-sage { background: var(--g50); }
+
+.lbl {
+  font-size: 8.5px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--gold);
+}
+.lbl-l { color: rgba(184,146,74,0.5); }
+
+/* Reveal */
+.r {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.r.vis { opacity: 1; transform: translateY(0); }
+.rd1 { transition-delay: 0.08s; }
+.rd2 { transition-delay: 0.18s; }
+.rd3 { transition-delay: 0.3s; }
+.rd4 { transition-delay: 0.44s; }
+
+/* ═══════════════════════════════════════════════
+   MANIFESTO — full bleed text
+═══════════════════════════════════════════════ */
+.manifesto {
+  background: var(--g900);
+  padding: 160px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.manifesto-bg-word {
+  position: absolute;
+  top: -10%;
+  left: -2%;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(180px, 30vw, 420px);
+  color: rgba(244,239,227,0.02);
+  text-transform: lowercase;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  line-height: 0.85;
+}
+.manifesto-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(32px, 5.5vw, 72px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--cream2);
+  max-width: 900px;
+  position: relative;
+  z-index: 2;
+}
+.manifesto-text em { color: var(--gold2); font-style: normal; }
+.manifesto-sub {
+  margin-top: 52px;
+  font-size: clamp(13px, 1.5vw, 16px);
+  color: rgba(244,239,227,0.38);
+  line-height: 1.85;
+  font-weight: 300;
+  max-width: 520px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ═══════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-top: 64px;
+}
+.stat-box {
+  padding: 36px 28px;
+  background: rgba(58,82,53,0.18);
+  border-left: 2px solid rgba(184,146,74,0.3);
+}
+.stat-n {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(38px,5vw,56px);
+  color: var(--gold2);
+  display: block;
+  line-height: 1;
+  text-transform: lowercase;
+}
+.stat-t {
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(244,239,227,0.3);
+  margin-top: 8px;
+  display: block;
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════
+   TEA BAG ANIMATION — APPLE SCROLL
+═══════════════════════════════════════════════ */
+.blends-outer {
+  background: var(--g900);
+  position: relative;
+}
+
+.blends-intro {
+  padding: 128px 52px 80px;
+  position: relative;
+  z-index: 2;
+}
+.blends-intro-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: end;
+}
+.blends-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(52px,8vw,96px);
+  text-transform: lowercase;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+}
+.blends-title em { color: var(--gold2); font-style: normal; }
+.blends-sub {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(16px,2vw,22px);
+  color: rgba(244,239,227,0.45);
+  line-height: 1.7;
+}
+
+/* Sticky blend container */
+.blends-sticky-wrap {
+  position: relative;
+  height: 400vh;
+}
+.blends-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Each blend panel */
+.blend-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 52px;
+  gap: 80px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.blend-panel.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ─── TEA BAG VISUAL ─── */
+.teabag-visual {
+  flex-shrink: 0;
+  width: 280px;
+  height: 400px;
+  position: relative;
+}
+
+.teabag-svg-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* SVG teabag */
+.tb-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Ingredients that float out */
+.tb-ingredients {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tb-ing {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.blend-panel.active .tb-ing {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger delays */
+.tb-ing:nth-child(1) { transition-delay: 0.15s; }
+.tb-ing:nth-child(2) { transition-delay: 0.25s; }
+.tb-ing:nth-child(3) { transition-delay: 0.35s; }
+.tb-ing:nth-child(4) { transition-delay: 0.45s; }
+.tb-ing:nth-child(5) { transition-delay: 0.55s; }
+.tb-ing:nth-child(6) { transition-delay: 0.65s; }
+.tb-ing:nth-child(7) { transition-delay: 0.75s; }
+
+/* Position around the teabag */
+.p0  { top: -8%;  left: 50%; transform-origin: center; }
+.p1  { top: 5%;   left: -18%; }
+.p2  { top: 5%;   right: -18%; }
+.p3  { top: 38%;  left: -28%; }
+.p4  { top: 38%;  right: -28%; }
+.p5  { bottom: 10%; left: -12%; }
+.p6  { bottom: 2%; right: -12%; }
+
+.tb-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(244,239,227,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background: rgba(58,82,53,0.3);
+}
+.tb-name {
+  font-size: 7.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(244,239,227,0.45);
+  font-weight: 300;
+  text-align: center;
+  max-width: 72px;
+  line-height: 1.5;
+}
+.tb-dose {
+  font-family: 'Playfair Display', serif;
+  font-size: 9px;
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* Blend info */
+.blend-info {
+  flex: 1;
+  max-width: 520px;
+}
+.blend-num-lbl {
+  font-size: 8px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(184,146,74,0.4);
+  font-weight: 300;
+  display: block;
+  margin-bottom: 18px;
+}
+.blend-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(60px,9vw,108px);
+  text-transform: lowercase;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+  display: block;
+  margin-bottom: 18px;
+}
+.blend-quote {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(16px,2vw,22px);
+  color: var(--gold2);
+  opacity: 0.75;
+  display: block;
+  margin-bottom: 28px;
+}
+.blend-desc {
+  font-size: 13px;
+  color: rgba(244,239,227,0.42);
+  line-height: 1.85;
+  font-weight: 300;
+  max-width: 400px;
+  margin-bottom: 32px;
+}
+
+/* Ingredient tags */
+.blend-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.btag {
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border: 1px solid rgba(244,239,227,0.1);
+  color: rgba(244,239,227,0.42);
+  font-weight: 300;
+  transition: border-color 0.3s, color 0.3s;
+}
+.btag:hover { border-color: rgba(244,239,227,0.3); color: rgba(244,239,227,0.8); }
+.btag.fn {
+  border-color: rgba(184,146,74,0.25);
+  color: var(--gold);
+}
+
+/* Progress dots */
+.blend-dots {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+.bd {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(244,239,227,0.18);
+  transition: all 0.4s ease;
+}
+.bd.on {
+  background: var(--gold);
+  height: 22px;
+  border-radius: 3px;
+}
+
+/* ─── BLEND CTA ─── */
+.blend-cta {
+  margin-top: 36px;
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--cream);
+  background: var(--g700);
+  padding: 13px 28px;
+  text-decoration: none;
+  transition: background 0.3s;
+  border: 1px solid rgba(244,239,227,0.08);
+}
+.blend-cta:hover { background: var(--g500); }
+
+/* ═══════════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════════ */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-top: 72px;
+}
+.proc-box {
+  padding: 44px 36px;
+  background: var(--cream2);
+  position: relative;
+  overflow: hidden;
+}
+.proc-box::before {
+  content: attr(data-n);
+  position: absolute;
+  top: 12px; right: 20px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 90px;
+  color: rgba(58,82,53,0.04);
+  line-height: 1;
+}
+.proc-lbl {
+  font-size: 8px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+  margin-bottom: 16px;
+  display: block;
+}
+.proc-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 24px;
+  text-transform: lowercase;
+  color: var(--g800);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+.proc-desc {
+  font-size: 12px;
+  color: var(--g400);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════
+   WHY CALMA — split layout
+═══════════════════════════════════════════════ */
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.why-left {
+  padding-right: 72px;
+  border-right: 1px solid rgba(58,82,53,0.1);
+}
+.why-right {
+  padding-left: 72px;
+}
+.why-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(36px,5.5vw,64px);
+  text-transform: lowercase;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--g800);
+  margin-bottom: 40px;
+}
+.why-title em { color: var(--gold); font-style: normal; }
+.why-body {
+  font-size: 14px;
+  color: var(--g400);
+  line-height: 1.9;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+.why-line {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(58,82,53,0.07);
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.why-line:last-child { border-bottom: none; }
+.wl-lbl {
+  font-size: 8px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+  padding-top: 4px;
+}
+.wl-text {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(14px,1.8vw,19px);
+  color: var(--g700);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════
+   PFAS STATEMENT — editorial full bleed
+═══════════════════════════════════════════════ */
+.pfas-section {
+  background: var(--g800);
+  padding: 160px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.pfas-bg {
+  position: absolute;
+  top: 0; left: 0;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(120px,22vw,280px);
+  color: rgba(244,239,227,0.025);
+  text-transform: lowercase;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  line-height: 0.85;
+  user-select: none;
+}
+.pfas-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: end;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 2;
+}
+.pfas-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(40px,6vw,76px);
+  text-transform: lowercase;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--cream);
+}
+.pfas-title em { color: var(--gold2); font-style: normal; }
+.pfas-body {
+  font-size: 13px;
+  color: rgba(244,239,227,0.4);
+  line-height: 1.9;
+  font-weight: 300;
+}
+.pfas-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  position: relative;
+  z-index: 2;
+}
+.pfas-badge {
+  padding: 36px 28px;
+  background: rgba(58,82,53,0.25);
+  border-top: 2px solid rgba(184,146,74,0.3);
+}
+.pfas-badge-n {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 36px;
+  color: var(--gold2);
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
+  display: block;
+  margin-bottom: 8px;
+}
+.pfas-badge-t {
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(244,239,227,0.3);
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIAL / COPY
+═══════════════════════════════════════════════ */
+.quote-full {
+  background: var(--g50);
+  padding: 120px 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.quote-full::before {
+  content: '"';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 340px;
+  color: rgba(58,82,53,0.04);
+  line-height: 1;
+  pointer-events: none;
+}
+.quote-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(28px,4.5vw,56px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--g800);
+  max-width: 860px;
+  position: relative;
+  z-index: 2;
+  text-transform: lowercase;
+}
+.quote-text em { color: var(--gold); font-style: normal; }
+.quote-attr {
+  margin-top: 32px;
+  font-size: 8.5px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--g400);
+  font-weight: 300;
+  position: relative;
+  z-index: 2;
+}
+
+/* ═══════════════════════════════════════════════
+   PRICING
+═══════════════════════════════════════════════ */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-top: 64px;
+}
+.price-card {
+  padding: 48px 36px;
+  background: var(--cream2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s;
+}
+.price-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 64px rgba(26,46,26,0.1);
+  z-index: 2;
+}
+.price-card.featured {
+  background: var(--g700);
+}
+.pc-lbl {
+  font-size: 8px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+  margin-bottom: 20px;
+  display: block;
+}
+.price-card.featured .pc-lbl { color: var(--gold2); }
+.pc-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 28px;
+  text-transform: lowercase;
+  color: var(--g800);
+  letter-spacing: -0.01em;
+  display: block;
+  margin-bottom: 4px;
+}
+.price-card.featured .pc-name { color: var(--cream); }
+.pc-price {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 56px;
+  color: var(--g600);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 16px 0;
+  display: block;
+}
+.price-card.featured .pc-price { color: var(--gold2); }
+.pc-unit { font-size: 14px; color: var(--g400); }
+.price-card.featured .pc-unit { color: rgba(244,239,227,0.4); }
+.pc-div {
+  width: 100%;
+  height: 1px;
+  background: rgba(58,82,53,0.1);
+  margin: 20px 0;
+}
+.price-card.featured .pc-div { background: rgba(244,239,227,0.1); }
+.pc-feat {
+  font-size: 12px;
+  color: var(--g400);
+  line-height: 1.8;
+  font-weight: 300;
+}
+.price-card.featured .pc-feat { color: rgba(244,239,227,0.5); }
+.pc-btn {
+  margin-top: auto;
+  padding-top: 28px;
+}
+.pc-btn a {
+  display: block;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 400;
+  text-decoration: none;
+  padding: 13px;
+  transition: all 0.3s;
+}
+.price-card:not(.featured) .pc-btn a {
+  border: 1px solid rgba(58,82,53,0.2);
+  color: var(--g700);
+}
+.price-card:not(.featured) .pc-btn a:hover {
+  background: var(--g700);
+  border-color: var(--g700);
+  color: var(--cream);
+}
+.price-card.featured .pc-btn a {
+  background: var(--gold);
+  color: var(--g900);
+}
+.price-card.featured .pc-btn a:hover { background: var(--gold2); }
+
+/* ═══════════════════════════════════════════════
+   NEWSLETTER
+═══════════════════════════════════════════════ */
+.newsletter {
+  background: var(--g900);
+  padding: 120px 52px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.nl-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(36px,5vw,64px);
+  text-transform: lowercase;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--cream);
+  margin-bottom: 20px;
+}
+.nl-title em { color: var(--gold2); font-style: normal; }
+.nl-sub {
+  font-size: 13px;
+  color: rgba(244,239,227,0.35);
+  line-height: 1.8;
+  font-weight: 300;
+}
+.nl-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.nl-form input[type="email"] {
+  width: 100%;
+  background: rgba(58,82,53,0.2);
+  border: 1px solid rgba(244,239,227,0.08);
+  color: var(--cream2);
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  padding: 16px 20px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.nl-form input[type="email"]::placeholder { color: rgba(244,239,227,0.25); }
+.nl-form input[type="email"]:focus { border-color: rgba(184,146,74,0.4); }
+.nl-form button {
+  background: var(--g600);
+  color: var(--cream);
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  font-weight: 400;
+  padding: 16px 28px;
+  cursor: none;
+  transition: background 0.3s;
+  align-self: flex-start;
+}
+.nl-form button:hover { background: var(--g500); }
+.nl-notice {
+  font-size: 9px;
+  color: rgba(244,239,227,0.2);
+  letter-spacing: 0.04em;
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer {
+  background: var(--g900);
+  padding: 80px 52px 48px;
+  border-top: 1px solid rgba(244,239,227,0.04);
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(244,239,227,0.06);
+  margin-bottom: 40px;
+}
+.footer-brand-logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 28px;
+  text-transform: lowercase;
+  color: var(--cream2);
+  letter-spacing: -0.02em;
+  display: block;
+  margin-bottom: 16px;
+}
+.footer-brand-logo sup { color: var(--gold); font-size: 0.5em; }
+.footer-brand-desc {
+  font-size: 12px;
+  color: rgba(244,239,227,0.28);
+  line-height: 1.8;
+  font-weight: 300;
+  max-width: 260px;
+}
+.footer-col-title {
+  font-size: 8px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(184,146,74,0.5);
+  font-weight: 400;
+  margin-bottom: 20px;
+  display: block;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-links a {
+  font-size: 12px;
+  color: rgba(244,239,227,0.25);
+  text-decoration: none;
+  font-weight: 300;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: rgba(244,239,227,0.6); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-size: 9px;
+  color: rgba(244,239,227,0.15);
+  letter-spacing: 0.08em;
+  font-weight: 300;
+}
+.footer-social {
+  display: flex;
+  gap: 20px;
+}
+.footer-social a {
+  font-size: 8.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(244,239,227,0.2);
+  text-decoration: none;
+  font-weight: 300;
+  transition: color 0.3s;
+}
+.footer-social a:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  .sec { padding: 80px 24px; }
+  .hero-title-wrap, .hero-foot { padding-left: 24px; padding-right: 24px; }
+  nav { padding: 18px 24px; }
+  .nav-links, .nav-cta { display: none; }
+  .hero-bg { display: none; }
+  .why-grid, .blends-intro-inner, .pfas-top, .newsletter, .footer-top { grid-template-columns: 1fr; gap: 40px; }
+  .why-left { border-right: none; padding-right: 0; padding-bottom: 48px; border-bottom: 1px solid rgba(58,82,53,0.1); }
+  .why-right { padding-left: 0; }
+  .stats-grid, .process-grid, .pricing-grid, .pfas-badges { grid-template-columns: 1fr 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .manifesto, .pfas-section { padding: 80px 24px; }
+  .blend-panel { flex-direction: column; padding: 24px; gap: 36px; }
+  .teabag-visual { width: 200px; height: 280px; }
+}
+@media (max-width: 600px) {
+  .stats-grid, .process-grid, .pricing-grid, .pfas-badges, .footer-top { grid-template-columns: 1fr; }
+  .blends-intro { padding: 80px 24px 48px; }
+  .scroll-hint { left: 24px; }
+  .hero-foot { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── CURSOR ─── -->
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">calma<sup>°</sup></a>
+  <ul class="nav-links">
+    <li><a href="#blends">blends</a></li>
+    <li><a href="#perche">perché</a></li>
+    <li><a href="#manifesto">manifesto</a></li>
+    <li><a href="#prezzi">prezzi</a></li>
+  </ul>
+  <a href="#prezzi" class="nav-cta">scopri</a>
+</nav>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+
+  <!-- Cross markers -->
+  <div class="x-mark x1" id="xm1">+</div>
+  <div class="x-mark x2" id="xm2">+</div>
+  <div class="x-mark x3" id="xm3">+</div>
+
+  <!-- Annotations -->
+  <div class="hero-ann ann-r1" id="annR1">erbe italiane<br>per la generazione<br>più ansiosa di sempre.</div>
+  <div class="hero-ann ann-r2" id="annR2">zero plastic.<br>zero pfas.<br>fatto in italia.</div>
+  <div class="hero-ann ann-l1" id="annL1">il 91% della gen z<br>ha ansia cronica.<br>questo è per loro.</div>
+
+  <!-- Main title -->
+  <div class="hero-title-wrap">
+    <span class="hero-t hero-t1" id="heroT1">calma</span>
+    <span class="hero-t hero-t2" id="heroT2">italiana<sup>°</sup></span>
+  </div>
+
+  <div class="hero-foot" id="heroFoot">
+    <p class="hero-tagline">una goccia, che cade lentamente.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">Rituale Quotidiano</span>
+      <span class="hero-pill">Zero Plastic · Zero PFAS</span>
+      <span class="hero-pill">Made in Italy · 2026</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint" id="scrollHint">
+    <div class="sh-line"></div>
+    <span class="sh-text">scroll</span>
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="mq-item gold">calma°</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">unwind</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">still</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">breathe</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">calma italiana</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item gold">calma°</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">unwind</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">still</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">breathe</span>
+    <span class="mq-item mq-sep">·</span>
+    <span class="mq-item">calma italiana</span>
+    <span class="mq-item mq-sep">·</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ MANIFESTO ═══════════════════════════ -->
+<section class="manifesto r" id="manifesto">
+  <div class="manifesto-bg-word">calma</div>
+  <p class="manifesto-text r">
+    per la generazione<br>
+    che porta il peso<br>
+    di <em>tutto.</em>
+  </p>
+  <p class="manifesto-sub r rd2">
+    "calma" significa quiete, in italiano. Non l'assenza di rumore — la presenza della quiete. Per la generazione che porta il peso del mondo sul proprio sistema nervoso, calma° non è un prodotto. È un permesso. Dieci minuti. Una tazza. Una goccia di calma italiana nel caos.
+  </p>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-box r rd1">
+      <span class="stat-n">91%</span>
+      <span class="stat-t">Gen Z con ansia cronica</span>
+    </div>
+    <div class="stat-box r rd2">
+      <span class="stat-n">0</span>
+      <span class="stat-t">plastic · pfas · sigillanti</span>
+    </div>
+    <div class="stat-box r rd3">
+      <span class="stat-n">10′</span>
+      <span class="stat-t">l'unico rituale che chiediamo</span>
+    </div>
+    <div class="stat-box r rd4">
+      <span class="stat-n">100%</span>
+      <span class="stat-t">italiano · biologico · tracciabile</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ BLENDS ═══════════════════════════ -->
+<section id="blends" class="blends-outer">
+
+  <div class="blends-intro">
+    <div class="blends-intro-inner">
+      <div class="r">
+        <span class="lbl lbl-l" style="margin-bottom:24px;display:block;">i nostri blend</span>
+        <div class="blends-title">ogni gusto<br><em>ha uno scopo.</em></div>
+      </div>
+      <p class="blends-sub r rd2">
+        Il gusto lo rende desiderabile. L'ingrediente funzionale fa il vero lavoro. Non puoi avere uno senza l'altro — questo è il principio dietro ogni blend calma°.
+      </p>
+    </div>
+  </div>
+
+  <!-- STICKY SHOWCASE -->
+  <div class="blends-sticky-wrap" id="blendsWrap">
+    <div class="blends-sticky" id="blendsSticky">
+
+      <!-- Progress dots -->
+      <div class="blend-dots">
+        <div class="bd on" id="bd0"></div>
+        <div class="bd" id="bd1"></div>
+        <div class="bd" id="bd2"></div>
+      </div>
+
+      <!-- ─── BLEND 1: UNWIND ─── -->
+      <div class="blend-panel active" id="bp0">
+        <div class="teabag-visual">
+          <div class="tb-ingredients">
+            <!-- Particles positioned around the teabag -->
+            <div class="tb-ing p0">
+              <div class="tb-icon">🌿</div>
+              <span class="tb-name">lavanda</span>
+              <span class="tb-dose">0.6g</span>
+            </div>
+            <div class="tb-ing p1">
+              <div class="tb-icon">🍯</div>
+              <span class="tb-name">miele in polvere</span>
+              <span class="tb-dose">0.5g</span>
+            </div>
+            <div class="tb-ing p2">
+              <div class="tb-icon">🌱</div>
+              <span class="tb-name">melissa</span>
+              <span class="tb-dose">0.5g</span>
+            </div>
+            <div class="tb-ing p3">
+              <div class="tb-icon" style="background:rgba(140,90,40,0.3);">🌿</div>
+              <span class="tb-name">ashwagandha</span>
+              <span class="tb-dose">0.3g</span>
+            </div>
+            <div class="tb-ing p4">
+              <div class="tb-icon" style="background:rgba(100,160,120,0.3);">⚗️</div>
+              <span class="tb-name">l-theanine</span>
+              <span class="tb-dose">0.2g</span>
+            </div>
+            <div class="tb-ing p5">
+              <div class="tb-icon">🌼</div>
+              <span class="tb-name">camomilla</span>
+              <span class="tb-dose">0.4g</span>
+            </div>
+            <div class="tb-ing p6">
+              <div class="tb-icon">🍦</div>
+              <span class="tb-name">vaniglia</span>
+              <span class="tb-dose">0.1g</span>
+            </div>
+          </div>
+
+          <svg class="tb-svg" viewBox="0 0 240 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tb0g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5A8A5A" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#1A3A1A" stop-opacity="0.85"/>
+              </linearGradient>
+              <linearGradient id="tb0gl" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7ABF7A" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#2A5A2A" stop-opacity="0.55"/>
+              </linearGradient>
+              <filter id="glow0">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- String from top -->
+            <line x1="120" y1="18" x2="120" y2="54" stroke="rgba(184,146,74,0.5)" stroke-width="1.2"/>
+            <!-- Tag -->
+            <rect x="106" y="4" width="28" height="16" rx="2" fill="rgba(184,146,74,0.15)" stroke="rgba(184,146,74,0.3)" stroke-width="0.8"/>
+            <text x="120" y="15" text-anchor="middle" font-family="Georgia,serif" font-size="5" fill="rgba(244,239,227,0.5)" letter-spacing="1">c°</text>
+            <!-- Teabag body — pyramid shape -->
+            <path d="M60 80 L120 58 L180 80 L190 260 L120 280 L50 260 Z" fill="url(#tb0g)" stroke="rgba(184,146,74,0.25)" stroke-width="0.8"/>
+            <!-- Left face lighter -->
+            <path d="M60 80 L120 58 L120 280 L50 260 Z" fill="url(#tb0gl)"/>
+            <!-- Inner herbs visible through semi-transparent fabric -->
+            <ellipse cx="120" cy="180" rx="38" ry="52" fill="rgba(100,160,80,0.12)"/>
+            <circle cx="100" cy="165" r="4" fill="rgba(120,180,90,0.3)"/>
+            <circle cx="135" cy="175" r="3" fill="rgba(100,160,80,0.25)"/>
+            <circle cx="112" cy="195" r="5" fill="rgba(140,190,100,0.2)"/>
+            <circle cx="128" cy="155" r="3.5" fill="rgba(120,170,90,0.25)"/>
+            <!-- Seal line -->
+            <path d="M68 82 L172 82" stroke="rgba(184,146,74,0.4)" stroke-width="1.2"/>
+            <!-- Bottom fold -->
+            <path d="M58 258 L182 258" stroke="rgba(184,146,74,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+            <!-- Crease lines suggesting fold -->
+            <line x1="120" y1="58" x2="120" y2="280" stroke="rgba(184,146,74,0.15)" stroke-width="0.6" stroke-dasharray="6,4"/>
+            <!-- Shadow -->
+            <ellipse cx="120" cy="285" rx="56" ry="7" fill="rgba(0,0,0,0.35)"/>
+            <!-- Label on bag -->
+            <text x="120" y="232" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-style="italic" font-size="11" fill="rgba(244,239,227,0.18)" letter-spacing="2">unwind</text>
+          </svg>
+        </div>
+
+        <div class="blend-info">
+          <span class="blend-num-lbl">01 · sera · rilassamento</span>
+          <span class="blend-name">unwind</span>
+          <span class="blend-quote">"finalmente è silenzio, qui dentro"</span>
+          <p class="blend-desc">Per il cervello delle 23 che non smette. L'ashwagandha abbassa il cortisolo. La L-theanine silenzia il rumore. La melissa lenisce dall'interno. La lavanda dice al tuo corpo che è al sicuro riposare.</p>
+          <div class="blend-tags">
+            <span class="btag">lavanda</span>
+            <span class="btag">miele</span>
+            <span class="btag">vaniglia</span>
+            <span class="btag">camomilla</span>
+            <span class="btag fn">ashwagandha</span>
+            <span class="btag fn">l-theanine</span>
+            <span class="btag fn">melissa</span>
+          </div>
+          <a href="#prezzi" class="blend-cta">scopri unwind</a>
+        </div>
+      </div>
+
+      <!-- ─── BLEND 2: STILL ─── -->
+      <div class="blend-panel" id="bp1">
+        <div class="teabag-visual">
+          <div class="tb-ingredients">
+            <div class="tb-ing p0">
+              <div class="tb-icon" style="background:rgba(155,100,180,0.3);">🌸</div>
+              <span class="tb-name">camomilla</span>
+              <span class="tb-dose">0.7g</span>
+            </div>
+            <div class="tb-ing p1">
+              <div class="tb-icon" style="background:rgba(200,130,200,0.3);">🌺</div>
+              <span class="tb-name">petali di rosa</span>
+              <span class="tb-dose">0.3g</span>
+            </div>
+            <div class="tb-ing p2">
+              <div class="tb-icon" style="background:rgba(160,120,200,0.3);">🟣</div>
+              <span class="tb-name">passiflora</span>
+              <span class="tb-dose">0.5g</span>
+            </div>
+            <div class="tb-ing p3">
+              <div class="tb-icon" style="background:rgba(140,190,120,0.25);">🌱</div>
+              <span class="tb-name">melissa</span>
+              <span class="tb-dose">0.4g</span>
+            </div>
+            <div class="tb-ing p4">
+              <div class="tb-icon" style="background:rgba(200,170,100,0.25);">🌼</div>
+              <span class="tb-name">tiglio</span>
+              <span class="tb-dose">0.4g</span>
+            </div>
+            <div class="tb-ing p5">
+              <div class="tb-icon" style="background:rgba(220,190,120,0.25);">🍋</div>
+              <span class="tb-name">bergamotto</span>
+              <span class="tb-dose">0.2g</span>
+            </div>
+          </div>
+
+          <svg class="tb-svg" viewBox="0 0 240 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tb1g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#7A5A9E" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#2A1840" stop-opacity="0.85"/>
+              </linearGradient>
+              <linearGradient id="tb1gl" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#9A7AC4" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#3A2060" stop-opacity="0.55"/>
+              </linearGradient>
+            </defs>
+            <line x1="120" y1="18" x2="120" y2="54" stroke="rgba(184,146,74,0.5)" stroke-width="1.2"/>
+            <rect x="106" y="4" width="28" height="16" rx="2" fill="rgba(184,146,74,0.15)" stroke="rgba(184,146,74,0.3)" stroke-width="0.8"/>
+            <text x="120" y="15" text-anchor="middle" font-family="Georgia,serif" font-size="5" fill="rgba(244,239,227,0.5)" letter-spacing="1">c°</text>
+            <path d="M60 80 L120 58 L180 80 L190 260 L120 280 L50 260 Z" fill="url(#tb1g)" stroke="rgba(184,146,74,0.25)" stroke-width="0.8"/>
+            <path d="M60 80 L120 58 L120 280 L50 260 Z" fill="url(#tb1gl)"/>
+            <ellipse cx="120" cy="180" rx="38" ry="52" fill="rgba(160,100,200,0.1)"/>
+            <circle cx="105" cy="168" r="4" fill="rgba(180,120,220,0.25)"/>
+            <circle cx="132" cy="178" r="3" fill="rgba(160,100,200,0.2)"/>
+            <circle cx="115" cy="198" r="5" fill="rgba(200,140,220,0.18)"/>
+            <path d="M68 82 L172 82" stroke="rgba(184,146,74,0.4)" stroke-width="1.2"/>
+            <path d="M58 258 L182 258" stroke="rgba(184,146,74,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+            <line x1="120" y1="58" x2="120" y2="280" stroke="rgba(184,146,74,0.15)" stroke-width="0.6" stroke-dasharray="6,4"/>
+            <ellipse cx="120" cy="285" rx="56" ry="7" fill="rgba(0,0,0,0.35)"/>
+            <text x="120" y="232" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-style="italic" font-size="11" fill="rgba(244,239,227,0.18)" letter-spacing="2">still</text>
+          </svg>
+        </div>
+
+        <div class="blend-info">
+          <span class="blend-num-lbl">02 · tensione · corpo</span>
+          <span class="blend-name">still</span>
+          <span class="blend-quote">"petto aperto, mandibola sciolta"</span>
+          <p class="blend-desc">Quando l'ansia arriva nel corpo prima che la mente se ne accorga. Petto stretto, mandibola serrata. La passiflora aumenta il GABA. La melissa abbassa il cortisolo. Questo lavora dall'interno verso l'esterno.</p>
+          <div class="blend-tags">
+            <span class="btag">camomilla</span>
+            <span class="btag">rosa</span>
+            <span class="btag">bergamotto</span>
+            <span class="btag fn">passiflora</span>
+            <span class="btag fn">melissa</span>
+            <span class="btag fn">tiglio</span>
+          </div>
+          <a href="#prezzi" class="blend-cta">scopri still</a>
+        </div>
+      </div>
+
+      <!-- ─── BLEND 3: BREATHE ─── -->
+      <div class="blend-panel" id="bp2">
+        <div class="teabag-visual">
+          <div class="tb-ingredients">
+            <div class="tb-ing p0">
+              <div class="tb-icon" style="background:rgba(80,180,120,0.3);">🍃</div>
+              <span class="tb-name">menta</span>
+              <span class="tb-dose">0.5g</span>
+            </div>
+            <div class="tb-ing p1">
+              <div class="tb-icon" style="background:rgba(220,200,120,0.25);">🍋</div>
+              <span class="tb-name">scorza di limone</span>
+              <span class="tb-dose">0.3g</span>
+            </div>
+            <div class="tb-ing p2">
+              <div class="tb-icon" style="background:rgba(200,180,110,0.25);">🌾</div>
+              <span class="tb-name">verbasco</span>
+              <span class="tb-dose">0.5g</span>
+            </div>
+            <div class="tb-ing p3">
+              <div class="tb-icon" style="background:rgba(100,160,80,0.3);">🌿</div>
+              <span class="tb-name">tulsi</span>
+              <span class="tb-dose">0.4g</span>
+            </div>
+            <div class="tb-ing p4">
+              <div class="tb-icon" style="background:rgba(120,140,100,0.3);">🏔️</div>
+              <span class="tb-name">rodiola</span>
+              <span class="tb-dose">0.3g</span>
+            </div>
+            <div class="tb-ing p5">
+              <div class="tb-icon" style="background:rgba(100,160,120,0.3);">⚗️</div>
+              <span class="tb-name">l-theanine</span>
+              <span class="tb-dose">0.2g</span>
+            </div>
+          </div>
+
+          <svg class="tb-svg" viewBox="0 0 240 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tb2g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5A9A7A" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#1A3A28" stop-opacity="0.85"/>
+              </linearGradient>
+              <linearGradient id="tb2gl" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7ABF9A" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#2A5A3A" stop-opacity="0.55"/>
+              </linearGradient>
+            </defs>
+            <line x1="120" y1="18" x2="120" y2="54" stroke="rgba(184,146,74,0.5)" stroke-width="1.2"/>
+            <rect x="106" y="4" width="28" height="16" rx="2" fill="rgba(184,146,74,0.15)" stroke="rgba(184,146,74,0.3)" stroke-width="0.8"/>
+            <text x="120" y="15" text-anchor="middle" font-family="Georgia,serif" font-size="5" fill="rgba(244,239,227,0.5)" letter-spacing="1">c°</text>
+            <path d="M60 80 L120 58 L180 80 L190 260 L120 280 L50 260 Z" fill="url(#tb2g)" stroke="rgba(184,146,74,0.25)" stroke-width="0.8"/>
+            <path d="M60 80 L120 58 L120 280 L50 260 Z" fill="url(#tb2gl)"/>
+            <ellipse cx="120" cy="180" rx="38" ry="52" fill="rgba(80,160,120,0.1)"/>
+            <circle cx="102" cy="162" r="4.5" fill="rgba(100,200,140,0.22)"/>
+            <circle cx="135" cy="172" r="3" fill="rgba(80,180,120,0.2)"/>
+            <circle cx="118" cy="196" r="5" fill="rgba(120,200,150,0.18)"/>
+            <path d="M68 82 L172 82" stroke="rgba(184,146,74,0.4)" stroke-width="1.2"/>
+            <path d="M58 258 L182 258" stroke="rgba(184,146,74,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+            <line x1="120" y1="58" x2="120" y2="280" stroke="rgba(184,146,74,0.15)" stroke-width="0.6" stroke-dasharray="6,4"/>
+            <ellipse cx="120" cy="285" rx="56" ry="7" fill="rgba(0,0,0,0.35)"/>
+            <text x="120" y="232" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-style="italic" font-size="11" fill="rgba(244,239,227,0.18)" letter-spacing="2">breathe</text>
+          </svg>
+        </div>
+
+        <div class="blend-info">
+          <span class="blend-num-lbl">03 · mattino · chiarezza · per chi fuma</span>
+          <span class="blend-name">breathe</span>
+          <span class="blend-quote">"ce la faccio"</span>
+          <p class="blend-desc">Prima di qualcosa di importante. Mani ferme, testa libera. La rodiola per la resistenza mentale. Il tulsi per mantenerti radicato. Il verbasco per aprire le vie aeree — l'alleato erboristico per chi fuma.</p>
+          <div class="blend-tags">
+            <span class="btag">menta</span>
+            <span class="btag">limone</span>
+            <span class="btag">basilico</span>
+            <span class="btag fn">verbasco</span>
+            <span class="btag fn">tulsi</span>
+            <span class="btag fn">rodiola</span>
+            <span class="btag fn">l-theanine</span>
+          </div>
+          <a href="#prezzi" class="blend-cta">scopri breathe</a>
+        </div>
+      </div>
+
+    </div><!-- /blends-sticky -->
+  </div><!-- /blends-sticky-wrap -->
+
+</section><!-- /blends -->
+
+<!-- ═══════════════════════════ PERCHÉ ═══════════════════════════ -->
+<section class="sec" id="perche">
+  <span class="lbl r">perché calma°</span>
+  <br><br>
+  <div class="why-grid">
+    <div class="why-left r rd1">
+      <div class="why-title">la quiete<br>non è <em>assenza.</em><br>è presenza.</div>
+      <p class="why-body">
+        Il tè funzionale esiste già. Ma quasi tutti i brand usano bustine in polipropilene — plastica che si scioglie nell'acqua calda che stai per bere. Noi abbiamo scoperto la verità. E costruito qualcosa di diverso.
+      </p>
+      <p class="why-body">
+        Le erbe italiane hanno una storia di millenni. Il sistema nervoso della Gen Z ha un problema di oggi. calma° è il ponte.
+      </p>
+    </div>
+    <div class="why-right r rd2">
+      <div class="why-line">
+        <span class="wl-lbl">zero plastic</span>
+        <div class="wl-text">Bustine in fibra di Manila — carta naturale, nessun sigillante sintetico.</div>
+      </div>
+      <div class="why-line">
+        <span class="wl-lbl">zero pfas</span>
+        <div class="wl-text">Nessun trattamento chimico. Nessun PFAS che migra nell'acqua calda.</div>
+      </div>
+      <div class="why-line">
+        <span class="wl-lbl">100% italiano</span>
+        <div class="wl-text">Erbe tracciate, produzione italiana, filiera corta e verificabile.</div>
+      </div>
+      <div class="why-line">
+        <span class="wl-lbl">funzionale</span>
+        <div class="wl-text">Ogni blend ha ingredienti attivi dosati — non decorativi. Ashwagandha, rodiola, L-theanine.</div>
+      </div>
+      <div class="why-line">
+        <span class="wl-lbl">il rituale</span>
+        <div class="wl-text">Dieci minuti. Una tazza. Una card con il tuo rane chibi. Questo è tutto quello che chiediamo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PROCESS ═══════════════════════════ -->
+<section class="sec sec-sage r">
+  <span class="lbl">il processo</span>
+  <br><br>
+  <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-style:italic;font-size:clamp(28px,4vw,52px);text-transform:lowercase;letter-spacing:-0.02em;color:var(--g800);margin-bottom:0;">come nasce una bustina<br><em style="color:var(--gold);">calma°.</em></h2>
+
+  <div class="process-grid">
+    <div class="proc-box r rd1" data-n="1">
+      <span class="proc-lbl">selezione</span>
+      <div class="proc-title">le erbe</div>
+      <p class="proc-desc">Selezione manuale da coltivatori italiani certificati. Ogni erba viene analizzata per principi attivi prima dell'accettazione. Nessuna filiera anonima.</p>
+    </div>
+    <div class="proc-box r rd2" data-n="2">
+      <span class="proc-lbl">dosaggio</span>
+      <div class="proc-title">la formula</div>
+      <p class="proc-desc">Ogni blend è bilanciato per gusto e funzione. L'ingrediente funzionale è al dosaggio minimo efficace — non decorativo. Il gusto lo rende una piacere, non un farmaco.</p>
+    </div>
+    <div class="proc-box r rd3" data-n="3">
+      <span class="proc-lbl">confezione</span>
+      <div class="proc-title">la bustina</div>
+      <p class="proc-desc">Fibra di Manila naturale, semi-trasparente. Vedi le erbe dentro. Nessun polipropilene, nessun PFAS, nessun sigillante sintetico. Biodegradabile in compost domestico.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PFAS STATEMENT ═══════════════════════════ -->
+<section class="pfas-section r">
+  <div class="pfas-bg">zero<br>plastic.</div>
+  <div class="pfas-top">
+    <div>
+      <span class="lbl lbl-l" style="margin-bottom:20px;display:block;">la verità che nessuno dice</span>
+      <div class="pfas-title">il tuo tè<br>ha <em>plastica</em><br>dentro.</div>
+    </div>
+    <p class="pfas-body r rd2">
+      Il 90% dei brand di tè usa bustine in polipropilene — una plastica che a 80°C rilascia miliardi di microparticelle nell'acqua che poi bevi. Studi peer-reviewed confermano: ogni tazza può contenere fino a 11 miliardi di particelle di plastica. calma° non usa polipropilene. Non usa PFAS. Non usa sigillanti sintetici. Solo Manila hemp. Solo erbe. Solo Italia.
+    </p>
+  </div>
+  <div class="pfas-badges">
+    <div class="pfas-badge r rd1">
+      <span class="pfas-badge-n">0</span>
+      <span class="pfas-badge-t">polipropilene</span>
+    </div>
+    <div class="pfas-badge r rd2">
+      <span class="pfas-badge-n">0</span>
+      <span class="pfas-badge-t">PFAS</span>
+    </div>
+    <div class="pfas-badge r rd3">
+      <span class="pfas-badge-n">Manila</span>
+      <span class="pfas-badge-t">fibra naturale biodegradabile</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ QUOTE ═══════════════════════════ -->
+<section class="quote-full">
+  <div class="quote-text r">
+    "una mente rilassata<br>è una mente <em>creativa.</em><br>questa è tua."
+  </div>
+  <span class="quote-attr r rd2">la card. ogni scatola. ogni blend.</span>
+</section>
+
+<!-- ═══════════════════════════ PRICING ═══════════════════════════ -->
+<section class="sec" id="prezzi">
+  <span class="lbl r">prezzi</span>
+  <br><br>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:0;" class="r rd1">
+    <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-style:italic;font-size:clamp(28px,4vw,52px);text-transform:lowercase;letter-spacing:-0.02em;color:var(--g800);">semplice.<br>onesto.</h2>
+    <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(14px,1.8vw,20px);color:var(--g400);line-height:1.65;">20 piramidi semi-trasparenti. Le erbe visibili dentro. Zero plastica. Made in Italy.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="price-card r rd1">
+      <span class="pc-lbl">singolo</span>
+      <span class="pc-name">una scatola</span>
+      <span class="pc-price">€22 <small class="pc-unit">/ box</small></span>
+      <div class="pc-div"></div>
+      <p class="pc-feat">20 piramidi · 1 blend · carta calma° insert · spedizione 3-5 giorni</p>
+      <div class="pc-btn"><a href="#">ordina ora</a></div>
+    </div>
+    <div class="price-card featured r rd2">
+      <span class="pc-lbl">più venduto</span>
+      <span class="pc-name">discovery kit</span>
+      <span class="pc-price">€58 <small class="pc-unit" style="color:rgba(244,239,227,0.35);">/ kit</small></span>
+      <div class="pc-div"></div>
+      <p class="pc-feat">tutti e 3 i blend · 60 piramidi · 3 card illustrate · risparmio €8</p>
+      <div class="pc-btn"><a href="#">scopri il kit</a></div>
+    </div>
+    <div class="price-card r rd3">
+      <span class="pc-lbl">abbonamento</span>
+      <span class="pc-name">mensile</span>
+      <span class="pc-price">€19 <small class="pc-unit">/ mese</small></span>
+      <div class="pc-div"></div>
+      <p class="pc-feat">1 box al mese · blend a scelta · pausa o cancella sempre · priorità su lanci limitati</p>
+      <div class="pc-btn"><a href="#">abbonati</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ NEWSLETTER ═══════════════════════════ -->
+<section class="newsletter">
+  <div>
+    <div class="nl-title r">sii il primo<br>a <em>sapere.</em></div>
+    <p class="nl-sub r rd2">Blend in edizione limitata. Lanci in anticipo. La verità sulle bustine di tè che nessun brand ti dice.</p>
+  </div>
+  <div>
+    <form class="nl-form r rd1" onsubmit="return false;">
+      <input type="email" placeholder="la tua email">
+      <button type="submit">iscriviti</button>
+      <span class="nl-notice">niente spam. mai. solo calma°.</span>
+    </form>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-brand-logo">calma<sup>°</sup></span>
+      <p class="footer-brand-desc">erbe italiane per il sistema nervoso della generazione più ansiosa di sempre. zero plastic. zero pfas. fatto in italia.</p>
+    </div>
+    <div>
+      <span class="footer-col-title">blend</span>
+      <ul class="footer-links">
+        <li><a href="#blends">unwind</a></li>
+        <li><a href="#blends">still</a></li>
+        <li><a href="#blends">breathe</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">brand</span>
+      <ul class="footer-links">
+        <li><a href="#manifesto">manifesto</a></li>
+        <li><a href="#perche">perché calma°</a></li>
+        <li><a href="#prezzi">prezzi</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">contatti</span>
+      <ul class="footer-links">
+        <li><a href="#">instagram</a></li>
+        <li><a href="#">tiktok</a></li>
+        <li><a href="#">ciao@calmatea.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 calma° · tutti i diritti riservati · made in italy</span>
+    <div class="footer-social">
+      <a href="#">@calma.tea</a>
+      <a href="#">tiktok</a>
+      <a href="#">calmatea.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── CURSOR ─── */
+const cur = document.getElementById('cur');
+const curRing = document.getElementById('cur-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px';
+  cur.style.top  = my + 'px';
+});
+
+(function tick() {
+  rx += (mx - rx) * 0.11;
+  ry += (my - ry) * 0.11;
+  curRing.style.left = rx + 'px';
+  curRing.style.top  = ry + 'px';
+  requestAnimationFrame(tick);
+})();
+
+/* ─── HERO ENTRANCE ─── */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('heroBg').classList.add('in');
+    document.getElementById('heroT1').classList.add('in');
+  }, 80);
+  setTimeout(() => {
+    document.getElementById('heroT2').classList.add('in');
+  }, 220);
+  setTimeout(() => {
+    document.getElementById('heroFoot').classList.add('in');
+    document.getElementById('scrollHint').classList.add('in');
+    ['xm1','xm2','xm3','annR1','annR2','annL1'].forEach(id => {
+      document.getElementById(id).classList.add('in');
+    });
+  }, 1000);
+});
+
+/* ─── NAV SCROLL ─── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ─── REVEAL ON SCROLL ─── */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('vis');
+      revObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+
+document.querySelectorAll('.r').forEach(el => revObs.observe(el));
+
+/* ─── BLEND SCROLL — Apple style ─── */
+const blendsWrap  = document.getElementById('blendsWrap');
+const blendsStick = document.getElementById('blendsSticky');
+const panels      = document.querySelectorAll('.blend-panel');
+const dots        = document.querySelectorAll('.bd');
+let curBlend = 0;
+
+function setBlend(idx) {
+  if (idx === curBlend) return;
+  panels[curBlend].classList.remove('active');
+  dots[curBlend].classList.remove('on');
+  curBlend = idx;
+  panels[curBlend].classList.add('active');
+  dots[curBlend].classList.add('on');
+}
+
+window.addEventListener('scroll', () => {
+  const rect = blendsWrap.getBoundingClientRect();
+  const totalH = blendsWrap.offsetHeight;
+  const scrolled = -rect.top;
+  if (scrolled < 0 || scrolled > totalH) return;
+
+  const segH = totalH / panels.length;
+  const idx = Math.min(
+    Math.floor(scrolled / segH),
+    panels.length - 1
+  );
+  setBlend(Math.max(0, idx));
+}, { passive: true });
+</script>
+</body>
+</html>
