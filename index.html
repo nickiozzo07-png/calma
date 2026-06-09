@@ -130,47 +130,18 @@ nav.scrolled {
 ═══════════════════════════════════════════════ */
 .hero {
   min-height: 100vh;
-  background: var(--cream);
+  background: #8FA882;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: flex-start;
   padding-bottom: 72px;
 }
-.hero::after {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 1;
-}
-.hero-bg {
-  position: absolute;
-  top: 6%; left: 48%;
-  width: 42%; height: 62%;
-  background: linear-gradient(155deg, var(--g500) 0%, var(--g900) 100%);
-  z-index: 0;
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 1.4s cubic-bezier(0.16,1,0.3,1);
-}
-.hero-bg.in { transform: scaleY(1); }
-.x-mark {
-  position: absolute; font-family: 'Jost', sans-serif; font-weight: 200;
-  font-size: 20px; color: rgba(58,82,53,0.18); z-index: 2;
-  opacity: 0; transition: opacity 1s ease 1.2s;
-}
-.x-mark.in { opacity: 1; }
-.x1 { top: 14%; left: 3.5%; } .x2 { top: 42%; right: 5%; } .x3 { bottom: 28%; left: 56%; }
-.hero-ann {
-  position: absolute; font-size: 9.5px; line-height: 1.7;
-  color: rgba(26,46,26,0.38); max-width: 175px; font-weight: 300; z-index: 3;
-  opacity: 0; transition: opacity 1.2s ease 1.4s;
-}
-.hero-ann.in { opacity: 1; }
-.ann-r1 { top: 10%; right: 5%; text-align: right; }
-.ann-r2 { top: 54%; right: 4%; text-align: right; }
-.ann-l1 { bottom: 22%; left: 4%; }
+.hero-bg { display: none; }
+.x-mark { display: none; }
+.hero-ann { display: none; }
 .hero-title-wrap { position: relative; z-index: 3; padding: 0 52px; }
 .hero-t {
   display: block;
@@ -213,16 +184,16 @@ nav.scrolled {
 }
 .scroll-hint.in { opacity: 1; }
 .sh-line {
-  width: 40px; height: 1px; background: var(--g400);
+  width: 40px; height: 1px; background: rgba(255,255,255,0.35);
   position: relative; overflow: hidden;
 }
 .sh-line::after {
   content: ''; position: absolute; top: 0; left: -100%;
-  width: 100%; height: 100%; background: var(--gold);
+  width: 100%; height: 100%; background: rgba(255,255,255,0.8);
   animation: shSlide 2s ease-in-out 2s infinite;
 }
 @keyframes shSlide { 0%{ left:-100%; } 50%{ left:0; } 100%{ left:100%; } }
-.sh-text { font-size: 8px; letter-spacing: 0.38em; text-transform: uppercase; color: rgba(58,82,53,0.35); font-weight: 300; }
+.sh-text { font-size: 8px; letter-spacing: 0.38em; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 300; }
 
 /* ═══════════════════════════════════════════════
    MARQUEE
@@ -745,33 +716,8 @@ footer { background: var(--g900); padding: 80px 52px 48px; border-top: 1px solid
 
 <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <section class="hero" id="hero">
-  <div class="hero-bg" id="heroBg"></div>
-  <div class="x-mark x1" id="xm1">+</div>
-  <div class="x-mark x2" id="xm2">+</div>
-  <div class="x-mark x3" id="xm3">+</div>
-  <div class="hero-ann ann-r1" id="annR1" data-it>erbe italiane<br>per la generazione<br>più ansiosa di sempre.</div>
-  <div class="hero-ann ann-r1" id="annR1e" data-en>italian herbs<br>for the most anxious<br>generation ever.</div>
-  <div class="hero-ann ann-r2" id="annR2" data-it>zero plastic.<br>zero pfas.<br>fatto in italia.</div>
-  <div class="hero-ann ann-r2" id="annR2e" data-en>zero plastic.<br>zero pfas.<br>made in italy.</div>
-  <div class="hero-ann ann-l1" id="annL1" data-it>il 91% della gen z<br>ha ansia cronica.<br>questo è per loro.</div>
-  <div class="hero-ann ann-l1" id="annL1e" data-en>91% of gen z<br>has chronic anxiety.<br>this is for them.</div>
-
   <div class="hero-title-wrap">
     <span class="hero-t hero-t1" id="heroT1">calma<sup>°</sup></span>
-    <span class="hero-t hero-t2" id="heroT2" data-it>fermati.</span>
-    <span class="hero-t hero-t2" id="heroT2e" data-en>be still.</span>
-  </div>
-
-  <div class="hero-foot" id="heroFoot">
-    <p class="hero-tagline" data-it>una goccia, che cade lentamente.</p>
-    <p class="hero-tagline" data-en>a single drop, falling slowly.</p>
-    <div class="hero-pills">
-      <span class="hero-pill" data-it>Rituale Quotidiano</span>
-      <span class="hero-pill" data-en>Daily Ritual</span>
-      <span class="hero-pill">Zero Plastic · Zero PFAS</span>
-      <span class="hero-pill" data-it>Fatto in Italia · 2026</span>
-      <span class="hero-pill" data-en>Made in Italy · 2026</span>
-    </div>
   </div>
 
   <div class="scroll-hint" id="scrollHint">
