@@ -323,10 +323,9 @@ nav.scrolled {
   font-size: clamp(16px,2vw,22px); color: rgba(244,239,227,0.45); line-height: 1.7;
 }
 
-/* ─── NEW BLEND SCROLL ANIMATION ─── */
-.blends-outer { background: var(--g900); position: relative; }
+/* ─── BLEND SCROLL ANIMATION — bande ingredienti ─── */
 
-/* Each blend gets its own sticky section */
+/* Ogni blend ha la propria sezione sticky alta 500vh */
 .blend-scroll-section {
   position: relative;
   height: 500vh;
@@ -342,7 +341,7 @@ nav.scrolled {
   align-items: stretch;
 }
 
-/* Left: visual area with teabag + bands */
+/* Pannello visuale sinistra */
 .blend-scene {
   flex: 1;
   position: relative;
@@ -350,11 +349,16 @@ nav.scrolled {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: 0;
   overflow: hidden;
+  background: #FAF0E8;
 }
 
-/* Right: info panel */
+/* Sfondo tinta per ogni blend */
+.blend-scene.breathe-bg { background: linear-gradient(180deg, #F0F7EC 0%, #FAF0E8 60%); }
+.blend-scene.still-bg   { background: linear-gradient(180deg, #F7F0F5 0%, #FAF0E8 60%); }
+.blend-scene.unwind-bg  { background: linear-gradient(180deg, #F2EFF8 0%, #FAF0E8 60%); }
+
+/* Pannello info destra */
 .blend-side-info {
   width: 380px;
   flex-shrink: 0;
@@ -366,31 +370,39 @@ nav.scrolled {
   padding: 48px 44px;
   position: relative;
   z-index: 20;
+  opacity: 0;
+  transform: translateX(18px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.blend-side-info.panel-in {
+  opacity: 1;
+  transform: translateX(0);
 }
 
-/* Ingredient bands cloud — positioned above the teabag */
+/* Cloud degli ingredienti — sopra la bustina */
 .blend-ingredients-cloud {
   position: absolute;
-  bottom: 42vh; /* sits above the teabag */
+  bottom: 44vh;
   left: 0; right: 0;
   display: flex;
-  flex-direction: column-reverse; /* band-1 is closest to bag = last in DOM order shown first */
+  flex-direction: column-reverse;
   align-items: center;
   gap: 0;
   pointer-events: none;
   z-index: 10;
 }
 
+/* Singola banda ingredienti */
 .ing-band {
   width: 100%;
-  max-width: 620px;
-  height: 80px;
+  max-width: 640px;
+  height: 82px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 20px;
   will-change: transform, opacity;
-  /* initial: sitting at translateY(0), bands start "stacked" — JS will set initial position */
+  /* JS imposta transform iniziale e la anima */
 }
 
 .ing-band .ing-item {
@@ -401,17 +413,17 @@ nav.scrolled {
 }
 
 .ing-item-icon {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.72);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.1);
-  backdrop-filter: blur(4px);
-  font-size: 0; /* hide emoji, use SVG */
+  background: rgba(255,255,255,0.78);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+  backdrop-filter: blur(6px);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .ing-item-icon svg {
@@ -420,17 +432,17 @@ nav.scrolled {
 }
 
 .ing-item-label {
-  font-size: 8px;
-  letter-spacing: 0.22em;
+  font-size: 7.5px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(42,62,42,0.55);
+  color: rgba(42,62,42,0.5);
   font-weight: 400;
   text-align: center;
-  max-width: 64px;
+  max-width: 62px;
   line-height: 1.3;
 }
 
-/* Teabag bottom area */
+/* Bustina in fondo */
 .teabag-bottom {
   position: relative;
   z-index: 15;
@@ -446,7 +458,7 @@ nav.scrolled {
   width: 200px;
   height: 320px;
   position: relative;
-  filter: drop-shadow(0 24px 40px rgba(0,0,0,0.22));
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.20));
   will-change: transform;
   flex-shrink: 0;
 }
@@ -456,22 +468,35 @@ nav.scrolled {
   height: 100%;
 }
 
+/* Nome blend sotto la bustina */
 .blend-label-under {
   font-family: 'Playfair Display', serif;
   font-weight: 400;
   font-style: italic;
   font-size: clamp(28px, 5vw, 52px);
-  color: rgba(42,62,42,0.22);
+  color: rgba(42,62,42,0.18);
   text-transform: lowercase;
   letter-spacing: -0.02em;
-  margin-top: 8px;
+  margin-top: 10px;
   margin-bottom: 0;
   opacity: 0;
   will-change: opacity;
-  padding-bottom: 12px;
+  padding-bottom: 14px;
+  transition: opacity 0.6s ease;
 }
 
-/* Side info panel styling */
+/* Numerino blend + progress bar */
+.blend-progress-bar {
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  width: 0%;
+  transition: width 0.05s linear;
+  z-index: 30;
+}
+
+/* Info panel styling */
 .blend-num-lbl {
   font-size: 8px; letter-spacing: 0.45em; text-transform: uppercase;
   color: rgba(184,146,74,0.55); font-weight: 300; display: block; margin-bottom: 18px;
@@ -679,11 +704,11 @@ footer { background: var(--g900); padding: 80px 52px 48px; border-top: 1px solid
   .manifesto, .pfas-section { padding: 80px 24px; }
   .blend-side-info { width: 260px; padding: 32px 24px; }
   .blend-name { font-size: clamp(38px,8vw,60px); }
-  .teabag-bottom .tb-svg-wrap { width: 140px; height: 220px; }
+  .teabag-bottom .tb-svg-wrap { width: 150px; height: 240px; }
   .blend-ingredients-cloud { bottom: 40vh; }
-  .ing-band { height: 64px; gap: 14px; }
-  .ing-item-icon { width: 40px; height: 40px; }
-  .ing-item-icon svg { width: 28px; height: 28px; }
+  .ing-band { height: 66px; gap: 12px; }
+  .ing-item-icon { width: 44px; height: 44px; }
+  .ing-item-icon svg { width: 30px; height: 30px; }
 }
 @media (max-width: 600px) {
   .stats-grid, .process-grid, .pricing-grid, .pfas-badges, .footer-top { grid-template-columns: 1fr; }
@@ -834,26 +859,228 @@ footer { background: var(--g900); padding: 80px 52px 48px; border-top: 1px solid
     </div>
   </div>
 
-  <!-- STICKY SHOWCASE -->
-  <div class="blends-sticky-wrap" id="blendsWrap">
-    <div class="blends-sticky" id="blendsSticky">
-      <div class="blend-dots">
-        <div class="bd on" id="bd0"></div>
-        <div class="bd" id="bd1"></div>
-        <div class="bd" id="bd2"></div>
-      </div>
+  <!-- DOTS NAV FIXED -->
+  <div class="blend-dots" id="blendDots" style="display:none;">
+    <div class="bd on" id="bd0"></div>
+    <div class="bd" id="bd1"></div>
+    <div class="bd" id="bd2"></div>
+  </div>
 
-      <!-- ───── BLEND 1: BREATHE (green herbs) ───── -->
-      <div class="blend-panel active" id="bp0">
-        <div class="teabag-visual">
-          <div class="tb-ingredients">
-            <div class="tb-ing p0"><div class="tb-icon">🍃</div><span class="tb-name" data-it>menta</span><span class="tb-name" data-en>mint</span><span class="tb-dose">0.5g</span></div>
-            <div class="tb-ing p1"><div class="tb-icon">🍋</div><span class="tb-name" data-it>scorza limone</span><span class="tb-name" data-en>lemon peel</span><span class="tb-dose">0.3g</span></div>
-            <div class="tb-ing p2"><div class="tb-icon">🌾</div><span class="tb-name" data-it>verbasco</span><span class="tb-name" data-en>mullein</span><span class="tb-dose">0.5g</span></div>
-            <div class="tb-ing p3"><div class="tb-icon">🌿</div><span class="tb-name">tulsi</span><span class="tb-dose">0.4g</span></div>
-            <div class="tb-ing p4"><div class="tb-icon">🏔️</div><span class="tb-name" data-it>rodiola</span><span class="tb-name" data-en>rhodiola</span><span class="tb-dose">0.3g</span></div>
-            <div class="tb-ing p5"><div class="tb-icon">⚗️</div><span class="tb-name">l-theanine</span><span class="tb-dose">0.2g</span></div>
+  <!-- ═══════════════════════════════════════════════════
+       BLENDS — 3 sezioni scroll separate, bustina + ingredienti esplosi
+  ═══════════════════════════════════════════════════ -->
+  <!-- BLEND 0: BREATHE -->
+  <div class="blend-scroll-section" id="bs0">
+    <div class="blend-sticky-container">
+      <div class="blend-scene breathe-bg" id="bscene0">
+        <div class="blend-progress-bar" id="bprog0"></div>
+        <div class="blend-ingredients-cloud" id="bcloud0">
+        <div class="blend-ingredients-cloud" id="bcloud0">
+
+          <!-- Banda 5: L-theanine (polvere bianca) -->
+          <div class="ing-band" id="b0-band5">
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><ellipse cx="18" cy="22" rx="12" ry="7" fill="#E8E8E8" opacity="0.6"/><ellipse cx="18" cy="20" rx="10" ry="5" fill="#F2F2F2" opacity="0.8"/><ellipse cx="18" cy="18" rx="7" ry="3" fill="#fff" opacity="0.9"/></svg>
+              </div>
+              <span class="ing-item-label">l-theanine</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><ellipse cx="18" cy="22" rx="11" ry="6" fill="#EDEDEF" opacity="0.65"/><ellipse cx="18" cy="19" rx="8" ry="4" fill="#F5F5F7" opacity="0.85"/></svg>
+              </div>
+              <span class="ing-item-label">polvere</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><ellipse cx="18" cy="23" rx="12" ry="6" fill="#E0E0E2" opacity="0.6"/><ellipse cx="18" cy="20" rx="9" ry="4" fill="#EAEAEC" opacity="0.8"/><ellipse cx="18" cy="17" rx="5" ry="2" fill="#F8F8F8" opacity="0.9"/></svg>
+              </div>
+              <span class="ing-item-label">amino</span>
+            </div>
           </div>
+
+          <!-- Banda 4: pezzi di limone -->
+          <div class="ing-band" id="b0-band4">
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><ellipse cx="18" cy="18" rx="12" ry="10" fill="#F7D060" opacity="0.85"/><ellipse cx="18" cy="18" rx="8" ry="7" fill="#FAE07A" opacity="0.7"/><ellipse cx="16" cy="16" rx="3" ry="3" fill="#fff" opacity="0.35"/></svg>
+              </div>
+              <span class="ing-item-label" data-it>scorza</span><span class="ing-item-label" data-en>lemon</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><path d="M8 18 Q18 6 28 18 Q18 30 8 18Z" fill="#F5C840" opacity="0.8"/><path d="M12 18 Q18 10 24 18 Q18 26 12 18Z" fill="#FAD85A" opacity="0.6"/></svg>
+              </div>
+              <span class="ing-item-label">limone</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><rect x="8" y="12" width="20" height="14" rx="5" fill="#F0C040" opacity="0.8"/><rect x="11" y="15" width="14" height="8" rx="3" fill="#F8D060" opacity="0.65"/></svg>
+              </div>
+              <span class="ing-item-label">buccia</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><ellipse cx="18" cy="18" rx="11" ry="9" fill="#ECC038" opacity="0.82"/><ellipse cx="18" cy="18" rx="7" ry="6" fill="#F4D050" opacity="0.7"/></svg>
+              </div>
+              <span class="ing-item-label">citrus</span>
+            </div>
+          </div>
+
+          <!-- Banda 3: bastoncini tulsi/erbe -->
+          <div class="ing-band" id="b0-band3">
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><rect x="15" y="4" width="6" height="28" rx="3" fill="#8B6842" opacity="0.8"/><rect x="14" y="8" width="8" height="4" rx="2" fill="#A07850" opacity="0.6"/><rect x="14" y="16" width="8" height="4" rx="2" fill="#A07850" opacity="0.6"/><rect x="14" y="24" width="8" height="4" rx="2" fill="#A07850" opacity="0.6"/></svg>
+              </div>
+              <span class="ing-item-label">tulsi</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><rect x="16" y="3" width="5" height="30" rx="2.5" fill="#9A7248" opacity="0.82"/><rect x="13" y="10" width="10" height="3" rx="1.5" fill="#B08860" opacity="0.55"/><rect x="13" y="20" width="10" height="3" rx="1.5" fill="#B08860" opacity="0.55"/></svg>
+              </div>
+              <span class="ing-item-label">erbe</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><rect x="17" y="4" width="4" height="28" rx="2" fill="#7A5C38" opacity="0.8"/><ellipse cx="19" cy="8" rx="5" ry="3" fill="#6A9040" opacity="0.7"/><ellipse cx="19" cy="16" rx="4" ry="2.5" fill="#5A8438" opacity="0.65"/></svg>
+              </div>
+              <span class="ing-item-label">ramoscello</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><rect x="15" y="4" width="6" height="28" rx="3" fill="#9C7252" opacity="0.78"/><rect x="12" y="12" width="12" height="3" rx="1.5" fill="#C4906A" opacity="0.5"/><rect x="12" y="22" width="12" height="3" rx="1.5" fill="#C4906A" opacity="0.5"/></svg>
+              </div>
+              <span class="ing-item-label">bastoncino</span>
+            </div>
+          </div>
+
+          <!-- Banda 2: fiori camomilla (giallo/crema) -->
+          <div class="ing-band" id="b0-band2">
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36">
+                  <g transform="translate(18,18)">
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82" transform="rotate(45)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82" transform="rotate(90)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82" transform="rotate(135)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82" transform="rotate(180)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82" transform="rotate(225)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82" transform="rotate(270)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E080" opacity="0.82" transform="rotate(315)"/>
+                    <circle r="5.5" fill="#D4A828" opacity="0.9"/>
+                    <circle r="3" fill="#E8C038" opacity="0.85"/>
+                  </g>
+                </svg>
+              </div>
+              <span class="ing-item-label" data-it>camomilla</span><span class="ing-item-label" data-en>chamomile</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36">
+                  <g transform="translate(18,18)">
+                    <ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#EDD870" opacity="0.8" transform="rotate(30)"/>
+                    <ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#EDD870" opacity="0.8" transform="rotate(90)"/>
+                    <ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#EDD870" opacity="0.8" transform="rotate(150)"/>
+                    <ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#EDD870" opacity="0.8" transform="rotate(210)"/>
+                    <ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#EDD870" opacity="0.8" transform="rotate(270)"/>
+                    <ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#EDD870" opacity="0.8" transform="rotate(330)"/>
+                    <circle r="4.5" fill="#C89820" opacity="0.88"/>
+                  </g>
+                </svg>
+              </div>
+              <span class="ing-item-label">fiore</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36">
+                  <g transform="translate(18,18)">
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F4EC88" opacity="0.78" transform="rotate(0)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F4EC88" opacity="0.78" transform="rotate(60)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F4EC88" opacity="0.78" transform="rotate(120)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F4EC88" opacity="0.78" transform="rotate(180)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F4EC88" opacity="0.78" transform="rotate(240)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F4EC88" opacity="0.78" transform="rotate(300)"/>
+                    <circle r="5" fill="#D0A018" opacity="0.9"/>
+                  </g>
+                </svg>
+              </div>
+              <span class="ing-item-label">camomilla</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36">
+                  <g transform="translate(18,18)">
+                    <ellipse cx="0" cy="-8" rx="3" ry="5" fill="#EBE068" opacity="0.8" transform="rotate(40)"/>
+                    <ellipse cx="0" cy="-8" rx="3" ry="5" fill="#EBE068" opacity="0.8" transform="rotate(100)"/>
+                    <ellipse cx="0" cy="-8" rx="3" ry="5" fill="#EBE068" opacity="0.8" transform="rotate(160)"/>
+                    <ellipse cx="0" cy="-8" rx="3" ry="5" fill="#EBE068" opacity="0.8" transform="rotate(220)"/>
+                    <ellipse cx="0" cy="-8" rx="3" ry="5" fill="#EBE068" opacity="0.8" transform="rotate(280)"/>
+                    <ellipse cx="0" cy="-8" rx="3" ry="5" fill="#EBE068" opacity="0.8" transform="rotate(340)"/>
+                    <circle r="4" fill="#C89020" opacity="0.88"/>
+                  </g>
+                </svg>
+              </div>
+              <span class="ing-item-label">fiore</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36">
+                  <g transform="translate(18,18)">
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E878" opacity="0.82" transform="rotate(20)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E878" opacity="0.82" transform="rotate(80)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E878" opacity="0.82" transform="rotate(140)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E878" opacity="0.82" transform="rotate(200)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E878" opacity="0.82" transform="rotate(260)"/>
+                    <ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#F0E878" opacity="0.82" transform="rotate(320)"/>
+                    <circle r="5" fill="#D4A820" opacity="0.9"/>
+                  </g>
+                </svg>
+              </div>
+              <span class="ing-item-label">camomilla</span>
+            </div>
+          </div>
+
+          <!-- Banda 1: foglie menta (verde brillante, vicina bustina) -->
+          <div class="ing-band" id="b0-band1">
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><path d="M18 4 Q28 10 26 22 Q20 30 12 26 Q4 18 18 4Z" fill="#3CB464" opacity="0.85"/><path d="M18 7 Q25 12 23 21 Q18 27 14 24 Q8 18 18 7Z" fill="#52CC78" opacity="0.6"/><path d="M18 10 L18 28" stroke="#2A8848" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
+              </div>
+              <span class="ing-item-label" data-it>menta</span><span class="ing-item-label" data-en>mint</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><path d="M18 6 Q30 12 28 24 Q22 32 10 28 Q2 20 18 6Z" fill="#2EA852" opacity="0.88"/><path d="M18 9 Q27 14 25 23 Q20 29 13 26 Q7 20 18 9Z" fill="#44C068" opacity="0.55"/><path d="M18 8 L18 29" stroke="#1E7C3C" stroke-width="1.8" stroke-linecap="round" opacity="0.72"/><path d="M18 16 L11 12" stroke="#1E7C3C" stroke-width="1" opacity="0.5"/><path d="M18 20 L25 16" stroke="#1E7C3C" stroke-width="1" opacity="0.5"/></svg>
+              </div>
+              <span class="ing-item-label">foglia</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><path d="M10 18 Q14 6 18 4 Q22 6 26 18 Q22 30 18 32 Q14 30 10 18Z" fill="#40BC60" opacity="0.82"/><path d="M14 18 Q16 10 18 8 Q20 10 22 18 Q20 26 18 28 Q16 26 14 18Z" fill="#58D078" opacity="0.6"/><path d="M18 8 L18 28" stroke="#288840" stroke-width="1.5" opacity="0.65"/></svg>
+              </div>
+              <span class="ing-item-label">menta</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><path d="M18 5 Q29 11 27 23 Q21 31 11 27 Q3 19 18 5Z" fill="#34B05A" opacity="0.86"/><path d="M18 8 Q26 13 24 22 Q19 28 13 25 Q7 19 18 8Z" fill="#4AC870" opacity="0.55"/><path d="M18 7 L18 28" stroke="#237A40" stroke-width="1.6" stroke-linecap="round" opacity="0.7"/></svg>
+              </div>
+              <span class="ing-item-label">menta</span>
+            </div>
+            <div class="ing-item">
+              <div class="ing-item-icon">
+                <svg viewBox="0 0 36 36"><path d="M8 20 Q12 8 18 5 Q24 8 28 20 Q24 31 18 32 Q12 31 8 20Z" fill="#38B85E" opacity="0.84"/><path d="M12 20 Q15 11 18 9 Q21 11 24 20 Q21 28 18 29 Q15 28 12 20Z" fill="#50CC74" opacity="0.58"/><path d="M18 8 L18 29" stroke="#257E3F" stroke-width="1.5" opacity="0.68"/></svg>
+              </div>
+              <span class="ing-item-label">foglia</span>
+            </div>
+          </div>
+
+        </div><!-- /blend-ingredients-cloud -->
+
+        <!-- BUSTINA -->
+        <div class="teabag-bottom" id="btbag0">
+          <div class="tb-svg-wrap" id="tbsvg0">
           <!-- REALISTIC GREEN HERBS TEA BAG -->
           <svg class="tb-svg" viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -956,248 +1183,248 @@ footer { background: var(--g900); padding: 80px 52px 48px; border-top: 1px solid
             <!-- Bottom fold crease -->
             <path d="M55 318 L205 318" stroke="rgba(210,204,188,0.3)" stroke-width="1" stroke-dasharray="5,4"/>
           </svg>
-        </div>
+          </div><!-- /tb-svg-wrap -->
+          <div class="blend-label-under" id="blbl0">breathe</div>
+        </div><!-- /teabag-bottom -->
 
-        <div class="blend-info">
-          <span class="blend-num-lbl" data-it>01 · mattino · chiarezza · per chi fuma</span>
-          <span class="blend-num-lbl" data-en>01 · morning · clarity · for smokers</span>
-          <span class="blend-name">breathe</span>
-          <span class="blend-quote" data-it>"ce la faccio"</span>
-          <span class="blend-quote" data-en>"i've got this"</span>
-          <p class="blend-desc" data-it>Prima di qualcosa di importante. Mani ferme, testa libera. La rodiola per la resistenza mentale. Il tulsi per mantenerti radicato. Il verbasco per aprire le vie aeree — l'alleato per chi fuma.</p>
-          <p class="blend-desc" data-en>Before something important. Steady hands, clear head. Rhodiola for mental endurance. Tulsi to keep you grounded. Mullein to open and clear the airways — the herbal ally for smokers.</p>
-          <div class="blend-tags">
-            <span class="btag" data-it>menta</span><span class="btag" data-en>mint</span>
-            <span class="btag" data-it>limone</span><span class="btag" data-en>lemon</span>
-            <span class="btag">tulsi</span>
-            <span class="btag fn" data-it>verbasco</span><span class="btag fn" data-en>mullein</span>
-            <span class="btag fn" data-it>rodiola</span><span class="btag fn" data-en>rhodiola</span>
-            <span class="btag fn">l-theanine</span>
-          </div>
-          <a href="#prezzi" class="blend-cta" data-it>scopri breathe</a>
-          <a href="#prezzi" class="blend-cta" data-en>discover breathe</a>
+      </div><!-- /blend-scene breathe -->
+
+      <div class="blend-side-info" id="binfo0">
+        <span class="blend-num-lbl" data-it>01 · mattino · chiarezza · per chi fuma</span>
+        <span class="blend-num-lbl" data-en>01 · morning · clarity · for smokers</span>
+        <span class="blend-name">breathe</span>
+        <span class="blend-quote" data-it>"ce la faccio"</span>
+        <span class="blend-quote" data-en>"i've got this"</span>
+        <p class="blend-desc" data-it>Prima di qualcosa di importante. Mani ferme, testa libera. La rodiola per la resistenza mentale. Il tulsi per mantenerti radicato. Il verbasco per aprire le vie aeree — l'alleato per chi fuma.</p>
+        <p class="blend-desc" data-en>Before something important. Steady hands, clear head. Rhodiola for mental endurance. Tulsi to keep you grounded. Mullein to open and clear the airways — the herbal ally for smokers.</p>
+        <div class="blend-tags">
+          <span class="btag" data-it>menta</span><span class="btag" data-en>mint</span>
+          <span class="btag" data-it>limone</span><span class="btag" data-en>lemon</span>
+          <span class="btag">tulsi</span>
+          <span class="btag fn" data-it>verbasco</span><span class="btag fn" data-en>mullein</span>
+          <span class="btag fn" data-it>rodiola</span><span class="btag fn" data-en>rhodiola</span>
+          <span class="btag fn">l-theanine</span>
         </div>
+        <a href="#prezzi" class="blend-cta" data-it>scopri breathe</a>
+        <a href="#prezzi" class="blend-cta" data-en>discover breathe</a>
+      </div><!-- /blend-side-info -->
+
+    </div><!-- /blend-sticky-container -->
+  </div><!-- /bs0 -->
+
+  <!-- BLEND 1: STILL -->
+  <div class="blend-scroll-section" id="bs1">
+    <div class="blend-sticky-container">
+      <div class="blend-scene still-bg" id="bscene1">
+        <div class="blend-progress-bar" id="bprog1"></div>
+        <div class="blend-ingredients-cloud" id="bcloud1">
+          <!-- Banda 5: fiori camomilla gialli (top) -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(0)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(45)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(90)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(135)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(180)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(225)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(270)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#DEBA40" opacity="0.9" transform="rotate(315)"/><circle r="6" fill="#C89018" opacity="0.92"/><circle r="3" fill="#E0AA28" opacity="0.85"/></g></svg></div><span class="ing-item-label" data-it>camomilla</span><span class="ing-item-label" data-en>chamomile</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#EAC835" opacity="0.85" transform="rotate(30)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#EAC835" opacity="0.85" transform="rotate(90)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#EAC835" opacity="0.85" transform="rotate(150)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#EAC835" opacity="0.85" transform="rotate(210)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#EAC835" opacity="0.85" transform="rotate(270)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#EAC835" opacity="0.85" transform="rotate(330)"/><circle r="5.5" fill="#C08818" opacity="0.9"/></g></svg></div><span class="ing-item-label">fiore</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-8" rx="3.5" ry="5.5" fill="#F0D040" opacity="0.88" transform="rotate(20)"/><ellipse cx="0" cy="-8" rx="3.5" ry="5.5" fill="#F0D040" opacity="0.88" transform="rotate(80)"/><ellipse cx="0" cy="-8" rx="3.5" ry="5.5" fill="#F0D040" opacity="0.88" transform="rotate(140)"/><ellipse cx="0" cy="-8" rx="3.5" ry="5.5" fill="#F0D040" opacity="0.88" transform="rotate(200)"/><ellipse cx="0" cy="-8" rx="3.5" ry="5.5" fill="#F0D040" opacity="0.88" transform="rotate(260)"/><ellipse cx="0" cy="-8" rx="3.5" ry="5.5" fill="#F0D040" opacity="0.88" transform="rotate(320)"/><circle r="5" fill="#D49018" opacity="0.9"/></g></svg></div><span class="ing-item-label">camomilla</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#E2C030" opacity="0.9" transform="rotate(0)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#E2C030" opacity="0.9" transform="rotate(72)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#E2C030" opacity="0.9" transform="rotate(144)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#E2C030" opacity="0.9" transform="rotate(216)"/><ellipse cx="0" cy="-9" rx="3" ry="6" fill="#E2C030" opacity="0.9" transform="rotate(288)"/><circle r="5.5" fill="#BA8010" opacity="0.92"/></g></svg></div><span class="ing-item-label">fiore</span></div>
+          </div>
+          <!-- Banda 4: steli passiflora viola/blu -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M12 28 Q14 20 18 14 Q22 8 24 4" stroke="#7060A8" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.8"/><ellipse cx="14" cy="24" rx="5" ry="2.5" fill="#8878B8" opacity="0.7" transform="rotate(-20 14 24)"/><ellipse cx="22" cy="12" rx="4" ry="2" fill="#9080C0" opacity="0.65" transform="rotate(15 22 12)"/></svg></div><span class="ing-item-label" data-it>passiflora</span><span class="ing-item-label" data-en>passionflower</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M14 30 Q16 22 18 16 Q21 10 23 5" stroke="#6858A0" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.78"/><ellipse cx="16" cy="25" rx="4.5" ry="2" fill="#8070B0" opacity="0.68" transform="rotate(-15 16 25)"/><ellipse cx="21" cy="13" rx="3.5" ry="2" fill="#8878B8" opacity="0.62" transform="rotate(20 21 13)"/></svg></div><span class="ing-item-label">stelo</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M10 31 Q14 21 18 14 Q22 8 26 4" stroke="#7868B0" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.82"/><ellipse cx="13" cy="26" rx="5" ry="2.5" fill="#9080C0" opacity="0.72" transform="rotate(-25 13 26)"/></svg></div><span class="ing-item-label">passiflora</span></div>
+          </div>
+          <!-- Banda 3: foglie melissa verdi -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 5 Q29 11 27 23 Q21 31 11 27 Q3 19 18 5Z" fill="#5A9040" opacity="0.85"/><path d="M18 8 Q26 13 24 22 Q19 28 13 25 Q7 19 18 8Z" fill="#70A852" opacity="0.55"/><path d="M18 7 L18 28" stroke="#3A6828" stroke-width="1.5" opacity="0.7"/><path d="M18 15 L10 12" stroke="#3A6828" stroke-width="1" opacity="0.5"/><path d="M18 20 L26 17" stroke="#3A6828" stroke-width="1" opacity="0.5"/></svg></div><span class="ing-item-label">melissa</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M8 19 Q12 7 18 5 Q24 7 28 19 Q24 31 18 32 Q12 31 8 19Z" fill="#4A8838" opacity="0.88"/><path d="M12 19 Q15 10 18 8 Q21 10 24 19 Q21 28 18 29 Q15 28 12 19Z" fill="#62A04C" opacity="0.55"/><path d="M18 8 L18 29" stroke="#328030" stroke-width="1.6" opacity="0.7"/></svg></div><span class="ing-item-label" data-it>foglia</span><span class="ing-item-label" data-en>leaf</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 5 Q30 12 28 24 Q22 32 10 28 Q2 20 18 5Z" fill="#54923E" opacity="0.86"/><path d="M18 8 Q27 14 25 23 Q20 29 13 26 Q7 20 18 8Z" fill="#6AAA50" opacity="0.52"/><path d="M18 7 L18 29" stroke="#387030" stroke-width="1.5" opacity="0.68"/></svg></div><span class="ing-item-label">melissa</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M10 19 Q13 8 18 6 Q23 8 26 19 Q23 30 18 31 Q13 30 10 19Z" fill="#508A3C" opacity="0.84"/><path d="M14 19 Q16 11 18 9 Q20 11 22 19 Q20 27 18 28 Q16 27 14 19Z" fill="#68A250" opacity="0.56"/><path d="M18 8 L18 28" stroke="#307028" stroke-width="1.5" opacity="0.67"/></svg></div><span class="ing-item-label">foglia</span></div>
+          </div>
+          <!-- Banda 2: fiori tiglio crema/bianco -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="8" fill="none" stroke="#D8C898" stroke-width="1"/><line x1="18" y1="10" x2="18" y2="6" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="25" y1="13" x2="28" y2="10" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="25" y1="23" x2="28" y2="26" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="18" y1="26" x2="18" y2="30" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="11" y1="23" x2="8" y2="26" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="11" y1="13" x2="8" y2="10" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><circle cx="18" cy="18" r="4" fill="#E8D8A0" opacity="0.88"/><circle cx="18" cy="18" r="2" fill="#F0E8B0" opacity="0.9"/></svg></div><span class="ing-item-label" data-it>tiglio</span><span class="ing-item-label" data-en>linden</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="7" fill="none" stroke="#D0C090" stroke-width="1"/><line x1="18" y1="11" x2="18" y2="7" stroke="#B8A060" stroke-width="1.5" opacity="0.68"/><line x1="25" y1="14" x2="28" y2="11" stroke="#B8A060" stroke-width="1.5" opacity="0.68"/><line x1="11" y1="14" x2="8" y2="11" stroke="#B8A060" stroke-width="1.5" opacity="0.68"/><line x1="18" y1="25" x2="18" y2="29" stroke="#B8A060" stroke-width="1.5" opacity="0.68"/><circle cx="18" cy="18" r="4" fill="#E0D098" opacity="0.85"/></svg></div><span class="ing-item-label">tiglio</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="8" fill="none" stroke="#D8C898" stroke-width="1"/><line x1="18" y1="10" x2="18" y2="5" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="26" y1="14" x2="30" y2="11" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="26" y1="22" x2="30" y2="25" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="10" y1="22" x2="6" y2="25" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><line x1="10" y1="14" x2="6" y2="11" stroke="#C0A870" stroke-width="1.5" opacity="0.7"/><circle cx="18" cy="18" r="4.5" fill="#EAD8A5" opacity="0.88"/></svg></div><span class="ing-item-label">fiore</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="19" r="7.5" fill="none" stroke="#CCC088" stroke-width="1"/><line x1="18" y1="11.5" x2="18" y2="7" stroke="#B09858" stroke-width="1.5" opacity="0.68"/><line x1="24" y1="14" x2="27" y2="11" stroke="#B09858" stroke-width="1.4" opacity="0.68"/><line x1="12" y1="14" x2="9" y2="11" stroke="#B09858" stroke-width="1.4" opacity="0.68"/><line x1="18" y1="26.5" x2="18" y2="31" stroke="#B09858" stroke-width="1.5" opacity="0.68"/><circle cx="18" cy="19" r="4" fill="#DED098" opacity="0.86"/></svg></div><span class="ing-item-label">tiglio</span></div>
+          </div>
+          <!-- Banda 1: petali rosa (vicina bustina) -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 6 Q26 10 28 18 Q26 26 18 30 Q10 26 8 18 Q10 10 18 6Z" fill="#C85878" opacity="0.85"/><path d="M18 10 Q24 13 25 18 Q24 23 18 26 Q12 23 11 18 Q12 13 18 10Z" fill="#D87090" opacity="0.55"/><ellipse cx="14" cy="13" rx="3" ry="2" fill="#fff" opacity="0.2" transform="rotate(-25 14 13)"/></svg></div><span class="ing-item-label" data-it>petali rosa</span><span class="ing-item-label" data-en>rose petals</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 5 Q27 9 29 18 Q27 27 18 31 Q9 27 7 18 Q9 9 18 5Z" fill="#BC4868" opacity="0.88"/><path d="M18 9 Q25 12 26 18 Q25 24 18 27 Q11 24 10 18 Q11 12 18 9Z" fill="#D06880" opacity="0.5"/></svg></div><span class="ing-item-label">rosa</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 7 Q28 12 28 20 Q24 29 16 29 Q8 25 8 18 Q10 10 18 7Z" fill="#C85070" opacity="0.86"/><path d="M18 11 Q25 14 25 20 Q22 26 16 26 Q10 22 10 18 Q12 12 18 11Z" fill="#D87888" opacity="0.52"/></svg></div><span class="ing-item-label">petalo</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M14 6 Q22 5 27 12 Q30 20 24 27 Q17 32 10 27 Q4 20 8 12 Q11 6 14 6Z" fill="#C04868" opacity="0.84"/><path d="M15 10 Q21 9 25 15 Q27 21 22 25 Q16 29 11 24 Q7 18 10 13 Q12 10 15 10Z" fill="#D06888" opacity="0.5"/></svg></div><span class="ing-item-label">petalo</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 6 Q27 10 29 19 Q27 28 18 31 Q9 28 7 19 Q9 10 18 6Z" fill="#CA5070" opacity="0.88"/><path d="M18 10 Q25 13 26 19 Q25 25 18 27 Q11 25 10 19 Q11 13 18 10Z" fill="#DC7888" opacity="0.52"/></svg></div><span class="ing-item-label">rosa</span></div>
+          </div>
+        </div><!-- /bcloud1 -->
+
+        <div class="teabag-bottom" id="btbag1">
+          <div class="tb-svg-wrap" id="tbsvg1">
+            <svg viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="mesh1s" x="0" y="0" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 0 L7 7 M7 0 L0 7" stroke="rgba(230,225,210,0.55)" stroke-width="0.5"/><path d="M3.5 0 L3.5 7 M0 3.5 L7 3.5" stroke="rgba(220,215,200,0.25)" stroke-width="0.4"/></pattern>
+                <linearGradient id="bb1s" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(240,235,220,0.22)"/><stop offset="40%" stop-color="rgba(250,245,230,0.35)"/><stop offset="100%" stop-color="rgba(220,215,200,0.18)"/></linearGradient>
+                <linearGradient id="bh1s" x1="0" y1="0" x2="0.4" y2="0"><stop offset="0%" stop-color="rgba(255,252,240,0.25)"/><stop offset="100%" stop-color="rgba(255,252,240,0)"/></linearGradient>
+                <clipPath id="bc1s"><path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z"/></clipPath>
+              </defs>
+              <path d="M200 85 Q240 60 248 30" stroke="rgba(235,228,210,0.75)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <circle cx="200" cy="87" r="3.5" fill="rgba(230,225,210,0.6)" stroke="rgba(210,205,190,0.4)" stroke-width="0.8"/>
+              <ellipse cx="130" cy="358" rx="72" ry="10" fill="rgba(0,0,0,0.25)"/>
+              <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#bb1s)" stroke="rgba(215,208,192,0.6)" stroke-width="1.2"/>
+              <g clip-path="url(#bc1s)">
+                <ellipse cx="140" cy="155" rx="11" ry="7" fill="#D87090" opacity="0.8" transform="rotate(-20 140 155)"/>
+                <ellipse cx="95" cy="185" rx="9" ry="6" fill="#C86080" opacity="0.75" transform="rotate(15 95 185)"/>
+                <ellipse cx="165" cy="168" rx="10" ry="6" fill="#E080A0" opacity="0.72" transform="rotate(-10 165 168)"/>
+                <ellipse cx="80" cy="225" rx="12" ry="7" fill="#D070A0" opacity="0.7" transform="rotate(25 80 225)"/>
+                <g transform="translate(105,145)"><circle r="7" fill="#E0CC55" opacity="0.8"/><circle r="3.5" fill="#ECDA65" opacity="0.88"/><line x1="0" y1="-7" x2="-2.5" y2="-13" stroke="#E8E0C0" stroke-width="1.5" opacity="0.65"/><line x1="7" y1="0" x2="13" y2="-2.5" stroke="#E8E0C0" stroke-width="1.5" opacity="0.65"/><line x1="0" y1="7" x2="2.5" y2="13" stroke="#E8E0C0" stroke-width="1.5" opacity="0.65"/><line x1="-7" y1="0" x2="-13" y2="2.5" stroke="#E8E0C0" stroke-width="1.5" opacity="0.65"/></g>
+                <g transform="translate(158,220)"><circle r="8" fill="#DECC58" opacity="0.8"/><circle r="4" fill="#ECDA68" opacity="0.88"/><line x1="0" y1="-8" x2="-3" y2="-14" stroke="#E8E0C0" stroke-width="1.4" opacity="0.62"/><line x1="8" y1="0" x2="14" y2="-3" stroke="#E8E0C0" stroke-width="1.4" opacity="0.62"/><line x1="0" y1="8" x2="3" y2="14" stroke="#E8E0C0" stroke-width="1.4" opacity="0.62"/><line x1="-8" y1="0" x2="-14" y2="3" stroke="#E8E0C0" stroke-width="1.4" opacity="0.62"/></g>
+                <ellipse cx="115" cy="200" rx="13" ry="7" fill="#6A9850" opacity="0.6" transform="rotate(-15 115 200)"/>
+                <ellipse cx="155" cy="245" rx="11" ry="6" fill="#589040" opacity="0.55" transform="rotate(20 155 245)"/>
+                <ellipse cx="105" cy="265" rx="7" ry="3.5" fill="#9070B8" opacity="0.7" transform="rotate(40 105 265)"/>
+                <ellipse cx="85" cy="285" rx="9" ry="5.5" fill="#C86888" opacity="0.68" transform="rotate(-25 85 285)"/>
+                <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#mesh1s)" opacity="1"/>
+              </g>
+              <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="none" stroke="rgba(215,208,192,0.55)" stroke-width="1"/>
+              <path d="M68 97 L192 97" stroke="rgba(210,204,188,0.65)" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M60 95 L130 62 L130 350 L48 320 Z" fill="url(#bh1s)"/>
+            </svg>
+          </div>
+          <div class="blend-label-under" id="blbl1">still</div>
+        </div>
+      </div><!-- /blend-scene still -->
+
+      <div class="blend-side-info" id="binfo1">
+        <span class="blend-num-lbl" data-it>02 · tensione corporea · pausa</span>
+        <span class="blend-num-lbl" data-en>02 · body tension · pause</span>
+        <span class="blend-name">still</span>
+        <span class="blend-quote" data-it>"petto aperto, mandibola sciolta"</span>
+        <span class="blend-quote" data-en>"chest open, jaw unclenched"</span>
+        <p class="blend-desc" data-it>Quando l'ansia arriva nel corpo prima che la mente se ne accorga. La passiflora aumenta il GABA. La melissa abbassa il cortisolo. Lavora dall'interno verso l'esterno.</p>
+        <p class="blend-desc" data-en>When anxiety shows up in your body before your mind notices it. Passionflower raises GABA. Lemon balm soothes cortisol. Works from the inside out.</p>
+        <div class="blend-tags">
+          <span class="btag" data-it>camomilla</span><span class="btag" data-en>chamomile</span>
+          <span class="btag" data-it>rosa</span><span class="btag" data-en>rose</span>
+          <span class="btag fn" data-it>passiflora</span><span class="btag fn" data-en>passionflower</span>
+          <span class="btag fn" data-it>melissa</span><span class="btag fn" data-en>lemon balm</span>
+          <span class="btag fn" data-it>tiglio</span><span class="btag fn" data-en>linden</span>
+        </div>
+        <a href="#prezzi" class="blend-cta" data-it>scopri still</a>
+        <a href="#prezzi" class="blend-cta" data-en>discover still</a>
       </div>
 
-      <!-- ───── BLEND 2: STILL (colorful floral) ───── -->
-      <div class="blend-panel" id="bp1">
-        <div class="teabag-visual">
-          <div class="tb-ingredients">
-            <div class="tb-ing p0"><div class="tb-icon">🌸</div><span class="tb-name" data-it>camomilla</span><span class="tb-name" data-en>chamomile</span><span class="tb-dose">0.7g</span></div>
-            <div class="tb-ing p1"><div class="tb-icon">🌺</div><span class="tb-name" data-it>petali di rosa</span><span class="tb-name" data-en>rose petals</span><span class="tb-dose">0.3g</span></div>
-            <div class="tb-ing p2"><div class="tb-icon">🟣</div><span class="tb-name" data-it>passiflora</span><span class="tb-name" data-en>passionflower</span><span class="tb-dose">0.5g</span></div>
-            <div class="tb-ing p3"><div class="tb-icon">🌱</div><span class="tb-name" data-it>melissa</span><span class="tb-name" data-en>lemon balm</span><span class="tb-dose">0.4g</span></div>
-            <div class="tb-ing p4"><div class="tb-icon">🌼</div><span class="tb-name" data-it>tiglio</span><span class="tb-name" data-en>linden</span><span class="tb-dose">0.4g</span></div>
-            <div class="tb-ing p5"><div class="tb-icon">🍋</div><span class="tb-name" data-it>bergamotto</span><span class="tb-name" data-en>bergamot</span><span class="tb-dose">0.2g</span></div>
+    </div><!-- /blend-sticky-container -->
+  </div><!-- /bs1 -->
+
+  <!-- BLEND 2: UNWIND -->
+  <div class="blend-scroll-section" id="bs2">
+    <div class="blend-sticky-container">
+      <div class="blend-scene unwind-bg" id="bscene2">
+        <div class="blend-progress-bar" id="bprog2"></div>
+        <div class="blend-ingredients-cloud" id="bcloud2">
+          <!-- Banda 5: boccioli lavanda viola (top) -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="12" rx="4" ry="8" fill="#9080C0" opacity="0.88"/><ellipse cx="18" cy="10" rx="2.5" ry="5" fill="#A890D0" opacity="0.75"/><rect x="17" y="18" width="2" height="10" rx="1" fill="#6A8040" opacity="0.7"/></svg></div><span class="ing-item-label" data-it>lavanda</span><span class="ing-item-label" data-en>lavender</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="11" rx="3.5" ry="7" fill="#8878B8" opacity="0.9"/><ellipse cx="18" cy="9" rx="2" ry="4.5" fill="#9888C8" opacity="0.72"/><rect x="17" y="17" width="2" height="11" rx="1" fill="#5A7838" opacity="0.72"/></svg></div><span class="ing-item-label">bocciolo</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="12" rx="4" ry="8" fill="#9888C8" opacity="0.85"/><ellipse cx="18" cy="10" rx="2.5" ry="5" fill="#A898D4" opacity="0.7"/><rect x="17" y="18" width="2" height="10" rx="1" fill="#628240" opacity="0.68"/></svg></div><span class="ing-item-label">lavanda</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="11" rx="3.5" ry="7.5" fill="#8070B0" opacity="0.9"/><ellipse cx="18" cy="9" rx="2" ry="4" fill="#9888C0" opacity="0.72"/><rect x="17" y="17" width="2" height="11" rx="1" fill="#5A7A38" opacity="0.7"/></svg></div><span class="ing-item-label">bocciolo</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="12" rx="4" ry="8" fill="#9080C0" opacity="0.88"/><ellipse cx="18" cy="10" rx="2.5" ry="5" fill="#B090D0" opacity="0.65"/><rect x="17" y="18" width="2" height="10" rx="1" fill="#608038" opacity="0.7"/></svg></div><span class="ing-item-label">lavanda</span></div>
           </div>
-          <!-- REALISTIC COLORFUL FLORAL TEA BAG -->
-          <svg class="tb-svg" viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="mesh1" x="0" y="0" width="7" height="7" patternUnits="userSpaceOnUse">
-                <path d="M0 0 L7 7 M7 0 L0 7" stroke="rgba(230,225,210,0.55)" stroke-width="0.5"/>
-                <path d="M3.5 0 L3.5 7 M0 3.5 L7 3.5" stroke="rgba(220,215,200,0.25)" stroke-width="0.4"/>
-              </pattern>
-              <linearGradient id="bagBody1" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="rgba(240,235,220,0.22)"/>
-                <stop offset="40%" stop-color="rgba(250,245,230,0.35)"/>
-                <stop offset="100%" stop-color="rgba(220,215,200,0.18)"/>
-              </linearGradient>
-              <linearGradient id="bagHL1" x1="0" y1="0" x2="0.4" y2="0">
-                <stop offset="0%" stop-color="rgba(255,252,240,0.25)"/>
-                <stop offset="100%" stop-color="rgba(255,252,240,0)"/>
-              </linearGradient>
-              <clipPath id="bagClip1">
-                <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z"/>
-              </clipPath>
-            </defs>
-
-            <path d="M200 85 Q240 60 248 30" stroke="rgba(235,228,210,0.75)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-            <circle cx="200" cy="87" r="3.5" fill="rgba(230,225,210,0.6)" stroke="rgba(210,205,190,0.4)" stroke-width="0.8"/>
-            <ellipse cx="130" cy="358" rx="72" ry="10" fill="rgba(0,0,0,0.28)"/>
-            <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#bagBody1)" stroke="rgba(215,208,192,0.6)" stroke-width="1.2"/>
-
-            <g clip-path="url(#bagClip1)">
-              <!-- Chamomile flowers (yellow centers) -->
-              <g transform="translate(98,138)"><circle r="8" fill="#E8D060" opacity="0.85"/><circle r="4" fill="#F0DC70" opacity="0.9"/><circle r="1.5" fill="#C8A848" opacity="0.8"/><line x1="0" y1="-8" x2="-3" y2="-14" stroke="#E8E0C8" stroke-width="1.5" opacity="0.7"/><line x1="8" y1="0" x2="14" y2="-3" stroke="#E8E0C8" stroke-width="1.5" opacity="0.7"/><line x1="0" y1="8" x2="3" y2="14" stroke="#E8E0C8" stroke-width="1.5" opacity="0.7"/><line x1="-8" y1="0" x2="-14" y2="3" stroke="#E8E0C8" stroke-width="1.5" opacity="0.7"/></g>
-              <g transform="translate(158,220)"><circle r="9" fill="#DECC58" opacity="0.8"/><circle r="4.5" fill="#ECD868" opacity="0.9"/><circle r="1.5" fill="#C0A040" opacity="0.8"/><line x1="0" y1="-9" x2="-3" y2="-15" stroke="#E8E0C8" stroke-width="1.5" opacity="0.65"/><line x1="9" y1="0" x2="15" y2="-3" stroke="#E8E0C8" stroke-width="1.5" opacity="0.65"/><line x1="0" y1="9" x2="3" y2="15" stroke="#E8E0C8" stroke-width="1.5" opacity="0.65"/><line x1="-9" y1="0" x2="-15" y2="3" stroke="#E8E0C8" stroke-width="1.5" opacity="0.65"/></g>
-              <g transform="translate(90,275)"><circle r="7" fill="#E0CC55" opacity="0.75"/><circle r="3.5" fill="#ECD868" opacity="0.85"/><line x1="0" y1="-7" x2="-2.5" y2="-12" stroke="#E8E0C8" stroke-width="1.5" opacity="0.6"/><line x1="7" y1="0" x2="12" y2="-2.5" stroke="#E8E0C8" stroke-width="1.5" opacity="0.6"/><line x1="0" y1="7" x2="2.5" y2="12" stroke="#E8E0C8" stroke-width="1.5" opacity="0.6"/><line x1="-7" y1="0" x2="-12" y2="2.5" stroke="#E8E0C8" stroke-width="1.5" opacity="0.6"/></g>
-
-              <!-- Pink/rose petals -->
-              <ellipse cx="140" cy="155" rx="11" ry="7" fill="#D87090" opacity="0.8" transform="rotate(-20 140 155)"/>
-              <ellipse cx="115" cy="190" rx="9" ry="6" fill="#C86080" opacity="0.75" transform="rotate(15 115 190)"/>
-              <ellipse cx="165" cy="168" rx="10" ry="6" fill="#E080A0" opacity="0.72" transform="rotate(-10 165 168)"/>
-              <ellipse cx="80" cy="230" rx="12" ry="7" fill="#D070A0" opacity="0.7" transform="rotate(25 80 230)"/>
-              <ellipse cx="148" cy="250" rx="9" ry="5.5" fill="#C86888" opacity="0.72" transform="rotate(-30 148 250)"/>
-              <ellipse cx="115" cy="300" rx="11" ry="6" fill="#DC7898" opacity="0.68" transform="rotate(12 115 300)"/>
-
-              <!-- Purple/lavender specks -->
-              <ellipse cx="105" cy="165" rx="7" ry="3.5" fill="#9070B8" opacity="0.7" transform="rotate(40 105 165)"/>
-              <ellipse cx="170" cy="240" rx="6" ry="3" fill="#8060A8" opacity="0.65" transform="rotate(-20 170 240)"/>
-              <ellipse cx="75" cy="260" rx="7" ry="3.5" fill="#9878C0" opacity="0.62" transform="rotate(30 75 260)"/>
-
-              <!-- Green herb base -->
-              <ellipse cx="125" cy="180" rx="14" ry="8" fill="#6A9850" opacity="0.6" transform="rotate(-15 125 180)"/>
-              <ellipse cx="95" cy="210" rx="12" ry="7" fill="#589040" opacity="0.55" transform="rotate(20 95 210)"/>
-              <ellipse cx="155" cy="195" rx="13" ry="7" fill="#5A9248" opacity="0.58" transform="rotate(-8 155 195)"/>
-              <ellipse cx="130" cy="270" rx="14" ry="8" fill="#628A50" opacity="0.55" transform="rotate(18 130 270)"/>
-
-              <!-- Cream chunks -->
-              <rect x="85" y="175" width="9" height="7" rx="2.5" fill="#D8CCAA" opacity="0.72" transform="rotate(20 85 175)"/>
-              <rect x="160" y="278" width="8" height="6" rx="2" fill="#D0C4A0" opacity="0.65" transform="rotate(-15 160 278)"/>
-              <rect x="110" y="240" width="10" height="7" rx="2.5" fill="#DCD0A8" opacity="0.7" transform="rotate(8 110 240)"/>
-
-              <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#mesh1)" opacity="1"/>
-            </g>
-
-            <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="none" stroke="rgba(215,208,192,0.55)" stroke-width="1"/>
-            <path d="M68 97 L192 97" stroke="rgba(210,204,188,0.65)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M60 95 L130 62 L130 350 L48 320 Z" fill="url(#bagHL1)"/>
-            <path d="M55 318 L205 318" stroke="rgba(210,204,188,0.3)" stroke-width="1" stroke-dasharray="5,4"/>
-          </svg>
-        </div>
-
-        <div class="blend-info">
-          <span class="blend-num-lbl" data-it>02 · tensione corporea · pausa</span>
-          <span class="blend-num-lbl" data-en>02 · body tension · pause</span>
-          <span class="blend-name">still</span>
-          <span class="blend-quote" data-it>"petto aperto, mandibola sciolta"</span>
-          <span class="blend-quote" data-en>"chest open, jaw unclenched"</span>
-          <p class="blend-desc" data-it>Quando l'ansia arriva nel corpo prima che la mente se ne accorga. Petto stretto, mandibola serrata. La passiflora aumenta il GABA. La melissa abbassa il cortisolo. Questo lavora dall'interno verso l'esterno.</p>
-          <p class="blend-desc" data-en>When anxiety shows up in your body before your mind notices it. Chest tight, jaw clenched. Passionflower raises GABA. Lemon balm soothes cortisol. This one works from the inside out.</p>
-          <div class="blend-tags">
-            <span class="btag" data-it>camomilla</span><span class="btag" data-en>chamomile</span>
-            <span class="btag" data-it>rosa</span><span class="btag" data-en>rose</span>
-            <span class="btag" data-it>bergamotto</span><span class="btag" data-en>bergamot</span>
-            <span class="btag fn" data-it>passiflora</span><span class="btag fn" data-en>passionflower</span>
-            <span class="btag fn" data-it>melissa</span><span class="btag fn" data-en>lemon balm</span>
-            <span class="btag fn" data-it>tiglio</span><span class="btag fn" data-en>linden</span>
+          <!-- Banda 4: polvere miele gialla -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="22" rx="13" ry="8" fill="#E8CC60" opacity="0.65"/><ellipse cx="18" cy="20" rx="10" ry="6" fill="#F0D870" opacity="0.82"/><ellipse cx="18" cy="18" rx="7" ry="3.5" fill="#F8E888" opacity="0.9"/><ellipse cx="18" cy="16" rx="4" ry="2" fill="#FFF4A0" opacity="0.85"/></svg></div><span class="ing-item-label" data-it>miele</span><span class="ing-item-label" data-en>honey</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="23" rx="12" ry="7" fill="#DCC058" opacity="0.6"/><ellipse cx="18" cy="21" rx="9" ry="5" fill="#EAD068" opacity="0.78"/><ellipse cx="18" cy="19" rx="6" ry="3" fill="#F5E080" opacity="0.88"/></svg></div><span class="ing-item-label">polvere</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="22" rx="12" ry="7" fill="#E8CC58" opacity="0.62"/><ellipse cx="18" cy="20" rx="9" ry="5.5" fill="#F0D870" opacity="0.8"/><ellipse cx="18" cy="17" rx="5" ry="2.5" fill="#FAE890" opacity="0.9"/></svg></div><span class="ing-item-label">miele</span></div>
           </div>
-          <a href="#prezzi" class="blend-cta" data-it>scopri still</a>
-          <a href="#prezzi" class="blend-cta" data-en>discover still</a>
+          <!-- Banda 3: foglie melissa verdi -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 5 Q29 11 27 23 Q21 31 11 27 Q3 19 18 5Z" fill="#5A9040" opacity="0.85"/><path d="M18 8 Q26 13 24 22 Q19 28 13 25 Q7 19 18 8Z" fill="#70A852" opacity="0.55"/><path d="M18 7 L18 28" stroke="#3A6828" stroke-width="1.5" opacity="0.7"/></svg></div><span class="ing-item-label">melissa</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M8 19 Q12 7 18 5 Q24 7 28 19 Q24 31 18 32 Q12 31 8 19Z" fill="#4A8838" opacity="0.88"/><path d="M12 19 Q15 10 18 8 Q21 10 24 19 Q21 28 18 29 Q15 28 12 19Z" fill="#62A04C" opacity="0.55"/><path d="M18 8 L18 29" stroke="#328030" stroke-width="1.6" opacity="0.7"/></svg></div><span class="ing-item-label" data-it>foglia</span><span class="ing-item-label" data-en>leaf</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M10 19 Q14 7 18 5 Q22 7 26 19 Q22 31 18 32 Q14 31 10 19Z" fill="#549040" opacity="0.86"/><path d="M14 19 Q16 11 18 9 Q20 11 22 19 Q20 27 18 28 Q16 27 14 19Z" fill="#6CAA52" opacity="0.52"/><path d="M18 8 L18 28" stroke="#347030" stroke-width="1.5" opacity="0.68"/></svg></div><span class="ing-item-label">melissa</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><path d="M18 5 Q30 12 28 24 Q22 32 10 28 Q2 20 18 5Z" fill="#4E8C3A" opacity="0.88"/><path d="M18 8 Q27 13 25 23 Q20 28 12 25 Q6 19 18 8Z" fill="#66A450" opacity="0.52"/><path d="M18 7 L18 29" stroke="#2E6828" stroke-width="1.5" opacity="0.7"/></svg></div><span class="ing-item-label">foglia</span></div>
+          </div>
+          <!-- Banda 2: fiori camomilla gialli -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(0)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(45)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(90)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(135)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(180)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(225)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(270)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#E8D048" opacity="0.88" transform="rotate(315)"/><circle r="5.5" fill="#C89018" opacity="0.92"/><circle r="3" fill="#DCA828" opacity="0.85"/></g></svg></div><span class="ing-item-label" data-it>camomilla</span><span class="ing-item-label" data-en>chamomile</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#F0D840" opacity="0.85" transform="rotate(30)"/><ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#F0D840" opacity="0.85" transform="rotate(90)"/><ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#F0D840" opacity="0.85" transform="rotate(150)"/><ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#F0D840" opacity="0.85" transform="rotate(210)"/><ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#F0D840" opacity="0.85" transform="rotate(270)"/><ellipse cx="0" cy="-8.5" rx="3" ry="5.5" fill="#F0D840" opacity="0.85" transform="rotate(330)"/><circle r="5" fill="#CA9010" opacity="0.9"/></g></svg></div><span class="ing-item-label">fiore</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#EEDC50" opacity="0.82" transform="rotate(20)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#EEDC50" opacity="0.82" transform="rotate(80)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#EEDC50" opacity="0.82" transform="rotate(140)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#EEDC50" opacity="0.82" transform="rotate(200)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#EEDC50" opacity="0.82" transform="rotate(260)"/><ellipse cx="0" cy="-9" rx="3.5" ry="6" fill="#EEDC50" opacity="0.82" transform="rotate(320)"/><circle r="5.5" fill="#C89018" opacity="0.92"/></g></svg></div><span class="ing-item-label">camomilla</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><g transform="translate(18,18)"><ellipse cx="0" cy="-8" rx="3" ry="5" fill="#F2E048" opacity="0.88" transform="rotate(40)"/><ellipse cx="0" cy="-8" rx="3" ry="5" fill="#F2E048" opacity="0.88" transform="rotate(100)"/><ellipse cx="0" cy="-8" rx="3" ry="5" fill="#F2E048" opacity="0.88" transform="rotate(160)"/><ellipse cx="0" cy="-8" rx="3" ry="5" fill="#F2E048" opacity="0.88" transform="rotate(220)"/><ellipse cx="0" cy="-8" rx="3" ry="5" fill="#F2E048" opacity="0.88" transform="rotate(280)"/><ellipse cx="0" cy="-8" rx="3" ry="5" fill="#F2E048" opacity="0.88" transform="rotate(340)"/><circle r="4.5" fill="#C08810" opacity="0.9"/></g></svg></div><span class="ing-item-label">fiore</span></div>
+          </div>
+          <!-- Banda 1: radici ashwagandha beige (vicina bustina) -->
+          <div class="ing-band">
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><rect x="11" y="14" width="14" height="8" rx="3" fill="#C8A870" opacity="0.85"/><rect x="9" y="16" width="5" height="5" rx="2" fill="#B89860" opacity="0.7"/><rect x="22" y="15" width="5" height="6" rx="2" fill="#B89860" opacity="0.7"/><rect x="14" y="22" width="8" height="4" rx="2" fill="#C0A068" opacity="0.65"/></svg></div><span class="ing-item-label">ashwagandha</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><rect x="10" y="13" width="16" height="10" rx="3.5" fill="#D0B078" opacity="0.82"/><rect x="8" y="15" width="6" height="6" rx="2.5" fill="#B89860" opacity="0.68"/><rect x="23" y="14" width="5" height="7" rx="2.5" fill="#C0A068" opacity="0.65"/></svg></div><span class="ing-item-label">radice</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><rect x="12" y="14" width="12" height="9" rx="3" fill="#C4A06A" opacity="0.88"/><rect x="10" y="16" width="5" height="5" rx="2" fill="#B29058" opacity="0.72"/><rect x="21" y="15" width="5" height="6" rx="2" fill="#BA9860" opacity="0.68"/></svg></div><span class="ing-item-label">radice</span></div>
+            <div class="ing-item"><div class="ing-item-icon"><svg viewBox="0 0 36 36"><rect x="9" y="14" width="18" height="9" rx="3.5" fill="#CCB070" opacity="0.8"/><rect x="7" y="16" width="6" height="5" rx="2" fill="#B89858" opacity="0.65"/><rect x="24" y="15" width="5" height="6" rx="2" fill="#C0A060" opacity="0.63"/><rect x="14" y="22" width="9" height="4" rx="2" fill="#B89855" opacity="0.6"/></svg></div><span class="ing-item-label">ashw.</span></div>
+          </div>
+        </div><!-- /bcloud2 -->
+
+        <div class="teabag-bottom" id="btbag2">
+          <div class="tb-svg-wrap" id="tbsvg2">
+            <svg viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="mesh2s" x="0" y="0" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 0 L7 7 M7 0 L0 7" stroke="rgba(230,225,210,0.55)" stroke-width="0.5"/><path d="M3.5 0 L3.5 7 M0 3.5 L7 3.5" stroke="rgba(220,215,200,0.25)" stroke-width="0.4"/></pattern>
+                <linearGradient id="bb2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(240,235,220,0.22)"/><stop offset="40%" stop-color="rgba(250,245,230,0.35)"/><stop offset="100%" stop-color="rgba(220,215,200,0.18)"/></linearGradient>
+                <linearGradient id="bh2s" x1="0" y1="0" x2="0.4" y2="0"><stop offset="0%" stop-color="rgba(255,252,240,0.25)"/><stop offset="100%" stop-color="rgba(255,252,240,0)"/></linearGradient>
+                <clipPath id="bc2s"><path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z"/></clipPath>
+              </defs>
+              <path d="M200 85 Q240 60 248 30" stroke="rgba(235,228,210,0.75)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <circle cx="200" cy="87" r="3.5" fill="rgba(230,225,210,0.6)" stroke="rgba(210,205,190,0.4)" stroke-width="0.8"/>
+              <ellipse cx="130" cy="358" rx="72" ry="10" fill="rgba(0,0,0,0.25)"/>
+              <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#bb2s)" stroke="rgba(215,208,192,0.6)" stroke-width="1.2"/>
+              <g clip-path="url(#bc2s)">
+                <ellipse cx="108" cy="140" rx="3" ry="9" fill="#8878C0" opacity="0.88" transform="rotate(-10 108 140)"/>
+                <ellipse cx="122" cy="134" rx="2.5" ry="8" fill="#9080C8" opacity="0.82" transform="rotate(5 122 134)"/>
+                <ellipse cx="136" cy="140" rx="3" ry="9" fill="#8070B8" opacity="0.85" transform="rotate(-6 136 140)"/>
+                <ellipse cx="150" cy="135" rx="2.5" ry="8" fill="#9888CC" opacity="0.78" transform="rotate(8 150 135)"/>
+                <ellipse cx="162" cy="142" rx="3" ry="9" fill="#8878C0" opacity="0.82" transform="rotate(-12 162 142)"/>
+                <ellipse cx="95" cy="158" rx="3" ry="9" fill="#9080C8" opacity="0.78" transform="rotate(4 95 158)"/>
+                <ellipse cx="110" cy="170" rx="2.5" ry="8" fill="#8070B8" opacity="0.82" transform="rotate(-7 110 170)"/>
+                <ellipse cx="130" cy="173" rx="3" ry="9" fill="#9888CC" opacity="0.75" transform="rotate(10 130 173)"/>
+                <ellipse cx="148" cy="167" rx="2.5" ry="8" fill="#8878C0" opacity="0.8" transform="rotate(-14 148 167)"/>
+                <ellipse cx="164" cy="172" rx="3" ry="9" fill="#8070B8" opacity="0.76" transform="rotate(6 164 172)"/>
+                <g transform="translate(100,158)"><circle r="6.5" fill="#DEAD50" opacity="0.82"/><circle r="3" fill="#ECC060" opacity="0.88"/><line x1="0" y1="-6.5" x2="-2" y2="-11" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/><line x1="6.5" y1="0" x2="11" y2="-2" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/><line x1="0" y1="6.5" x2="2" y2="11" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/><line x1="-6.5" y1="0" x2="-11" y2="2" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/></g>
+                <g transform="translate(165,255)"><circle r="7" fill="#E0B848" opacity="0.78"/><circle r="3.5" fill="#EEC858" opacity="0.85"/><line x1="0" y1="-7" x2="-2.5" y2="-12" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/><line x1="7" y1="0" x2="12" y2="-2.5" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/><line x1="0" y1="7" x2="2.5" y2="12" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/><line x1="-7" y1="0" x2="-12" y2="2.5" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/></g>
+                <ellipse cx="78" cy="205" rx="9" ry="5" fill="#5A8040" opacity="0.62" transform="rotate(20 78 205)"/>
+                <rect x="130" y="225" width="10" height="8" rx="3" fill="#D4C898" opacity="0.72" transform="rotate(15 130 225)"/>
+                <rect x="75" y="255" width="9" height="7" rx="2.5" fill="#C8BC8A" opacity="0.65" transform="rotate(-20 75 255)"/>
+                <ellipse cx="80" cy="280" rx="3" ry="9" fill="#9080C8" opacity="0.72" transform="rotate(-5 80 280)"/>
+                <ellipse cx="155" cy="275" rx="2.5" ry="8" fill="#8878C0" opacity="0.68" transform="rotate(9 155 275)"/>
+                <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#mesh2s)" opacity="1"/>
+              </g>
+              <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="none" stroke="rgba(215,208,192,0.55)" stroke-width="1"/>
+              <path d="M68 97 L192 97" stroke="rgba(210,204,188,0.65)" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M60 95 L130 62 L130 350 L48 320 Z" fill="url(#bh2s)"/>
+            </svg>
+          </div>
+          <div class="blend-label-under" id="blbl2">unwind</div>
         </div>
+      </div><!-- /blend-scene unwind -->
+
+      <div class="blend-side-info" id="binfo2">
+        <span class="blend-num-lbl" data-it>03 · sera · sistema nervoso</span>
+        <span class="blend-num-lbl" data-en>03 · evening · nervous system</span>
+        <span class="blend-name">unwind</span>
+        <span class="blend-quote" data-it>"finalmente è silenzio, qui dentro"</span>
+        <span class="blend-quote" data-en>"it's finally quiet in here"</span>
+        <p class="blend-desc" data-it>Per il cervello delle 23 che non smette. L'ashwagandha abbassa il cortisolo. La L-theanine silenzia il rumore. La melissa lenisce dall'interno. La lavanda dice al tuo corpo che è al sicuro riposare.</p>
+        <p class="blend-desc" data-en>For the 11pm brain that won't stop. Ashwagandha lowers cortisol. L-theanine quiets the noise. Melissa soothes from the inside. Lavender tells your body it's safe to rest.</p>
+        <div class="blend-tags">
+          <span class="btag" data-it>lavanda</span><span class="btag" data-en>lavender</span>
+          <span class="btag" data-it>miele</span><span class="btag" data-en>honey</span>
+          <span class="btag" data-it>camomilla</span><span class="btag" data-en>chamomile</span>
+          <span class="btag fn">ashwagandha</span>
+          <span class="btag fn">l-theanine</span>
+          <span class="btag fn">melissa</span>
+        </div>
+        <a href="#prezzi" class="blend-cta" data-it>scopri unwind</a>
+        <a href="#prezzi" class="blend-cta" data-en>discover unwind</a>
       </div>
 
-      <!-- ───── BLEND 3: UNWIND (lavender/purple) ───── -->
-      <div class="blend-panel" id="bp2">
-        <div class="teabag-visual">
-          <div class="tb-ingredients">
-            <div class="tb-ing p0"><div class="tb-icon">🌿</div><span class="tb-name" data-it>lavanda</span><span class="tb-name" data-en>lavender</span><span class="tb-dose">0.6g</span></div>
-            <div class="tb-ing p1"><div class="tb-icon">🍯</div><span class="tb-name" data-it>miele</span><span class="tb-name" data-en>honey powder</span><span class="tb-dose">0.5g</span></div>
-            <div class="tb-ing p2"><div class="tb-icon">🌱</div><span class="tb-name">melissa</span><span class="tb-dose">0.5g</span></div>
-            <div class="tb-ing p3"><div class="tb-icon">🌿</div><span class="tb-name" data-it>ashwagandha</span><span class="tb-name" data-en>ashwagandha</span><span class="tb-dose">0.3g</span></div>
-            <div class="tb-ing p4"><div class="tb-icon">⚗️</div><span class="tb-name">l-theanine</span><span class="tb-dose">0.2g</span></div>
-            <div class="tb-ing p5"><div class="tb-icon">🌼</div><span class="tb-name" data-it>camomilla</span><span class="tb-name" data-en>chamomile</span><span class="tb-dose">0.4g</span></div>
-          </div>
-          <!-- REALISTIC LAVENDER TEA BAG -->
-          <svg class="tb-svg" viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="mesh2" x="0" y="0" width="7" height="7" patternUnits="userSpaceOnUse">
-                <path d="M0 0 L7 7 M7 0 L0 7" stroke="rgba(230,225,210,0.55)" stroke-width="0.5"/>
-                <path d="M3.5 0 L3.5 7 M0 3.5 L7 3.5" stroke="rgba(220,215,200,0.25)" stroke-width="0.4"/>
-              </pattern>
-              <linearGradient id="bagBody2" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="rgba(240,235,220,0.22)"/>
-                <stop offset="40%" stop-color="rgba(250,245,230,0.35)"/>
-                <stop offset="100%" stop-color="rgba(220,215,200,0.18)"/>
-              </linearGradient>
-              <linearGradient id="bagHL2" x1="0" y1="0" x2="0.4" y2="0">
-                <stop offset="0%" stop-color="rgba(255,252,240,0.25)"/>
-                <stop offset="100%" stop-color="rgba(255,252,240,0)"/>
-              </linearGradient>
-              <clipPath id="bagClip2">
-                <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z"/>
-              </clipPath>
-            </defs>
+    </div><!-- /blend-sticky-container -->
+  </div><!-- /bs2 -->
 
-            <path d="M200 85 Q240 60 248 30" stroke="rgba(235,228,210,0.75)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-            <circle cx="200" cy="87" r="3.5" fill="rgba(230,225,210,0.6)" stroke="rgba(210,205,190,0.4)" stroke-width="0.8"/>
-            <ellipse cx="130" cy="358" rx="72" ry="10" fill="rgba(0,0,0,0.28)"/>
-            <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#bagBody2)" stroke="rgba(215,208,192,0.6)" stroke-width="1.2"/>
+  <!-- dummy div id=blendsWrap per il vecchio JS -->
+  <div id="blendsWrap" style="display:none;"></div>
 
-            <g clip-path="url(#bagClip2)">
-              <!-- Lavender buds — the dominant purple color -->
-              <ellipse cx="108" cy="140" rx="3" ry="9" fill="#8878C0" opacity="0.85" transform="rotate(-10 108 140)"/>
-              <ellipse cx="120" cy="132" rx="2.5" ry="8" fill="#9080C8" opacity="0.8" transform="rotate(5 120 132)"/>
-              <ellipse cx="133" cy="138" rx="3" ry="9" fill="#8070B8" opacity="0.85" transform="rotate(-5 133 138)"/>
-              <ellipse cx="148" cy="135" rx="2.5" ry="8" fill="#9888CC" opacity="0.78" transform="rotate(8 148 135)"/>
-              <ellipse cx="160" cy="142" rx="3" ry="9" fill="#8878C0" opacity="0.82" transform="rotate(-12 160 142)"/>
-              <ellipse cx="88" cy="148" rx="2.5" ry="8" fill="#9080C8" opacity="0.75" transform="rotate(3 88 148)"/>
-
-              <ellipse cx="95" cy="175" rx="3" ry="9" fill="#8070B8" opacity="0.8" transform="rotate(-8 95 175)"/>
-              <ellipse cx="110" cy="168" rx="2.5" ry="8" fill="#9888CC" opacity="0.78" transform="rotate(10 110 168)"/>
-              <ellipse cx="128" cy="172" rx="3" ry="9" fill="#8878C0" opacity="0.82" transform="rotate(-5 128 172)"/>
-              <ellipse cx="145" cy="165" rx="2.5" ry="8" fill="#9080C8" opacity="0.75" transform="rotate(7 145 165)"/>
-              <ellipse cx="162" cy="170" rx="3" ry="9" fill="#8878C0" opacity="0.8" transform="rotate(-15 162 170)"/>
-              <ellipse cx="178" cy="160" rx="2.5" ry="8" fill="#8070B8" opacity="0.72" transform="rotate(5 178 160)"/>
-
-              <ellipse cx="78" cy="205" rx="3" ry="9" fill="#9888CC" opacity="0.78" transform="rotate(-6 78 205)"/>
-              <ellipse cx="96" cy="200" rx="2.5" ry="8" fill="#8878C0" opacity="0.82" transform="rotate(12 96 200)"/>
-              <ellipse cx="115" cy="208" rx="3" ry="9" fill="#8070B8" opacity="0.8" transform="rotate(-9 115 208)"/>
-              <ellipse cx="133" cy="200" rx="2.5" ry="8" fill="#9080C8" opacity="0.75" transform="rotate(4 133 200)"/>
-              <ellipse cx="152" cy="205" rx="3" ry="9" fill="#8878C0" opacity="0.8" transform="rotate(-12 152 205)"/>
-              <ellipse cx="168" cy="195" rx="2.5" ry="8" fill="#9888CC" opacity="0.72" transform="rotate(8 168 195)"/>
-
-              <ellipse cx="90" cy="240" rx="3" ry="9" fill="#8070B8" opacity="0.75" transform="rotate(-5 90 240)"/>
-              <ellipse cx="108" cy="233" rx="2.5" ry="8" fill="#9080C8" opacity="0.78" transform="rotate(10 108 233)"/>
-              <ellipse cx="127" cy="238" rx="3" ry="9" fill="#8878C0" opacity="0.8" transform="rotate(-7 127 238)"/>
-              <ellipse cx="145" cy="230" rx="2.5" ry="8" fill="#9888CC" opacity="0.73" transform="rotate(6 145 230)"/>
-              <ellipse cx="162" cy="238" rx="3" ry="9" fill="#8070B8" opacity="0.76" transform="rotate(-11 162 238)"/>
-
-              <ellipse cx="82" cy="275" rx="3" ry="9" fill="#9080C8" opacity="0.72" transform="rotate(-4 82 275)"/>
-              <ellipse cx="100" cy="268" rx="2.5" ry="8" fill="#8878C0" opacity="0.75" transform="rotate(9 100 268)"/>
-              <ellipse cx="120" cy="273" rx="3" ry="9" fill="#8070B8" opacity="0.78" transform="rotate(-8 120 273)"/>
-              <ellipse cx="140" cy="265" rx="2.5" ry="8" fill="#9888CC" opacity="0.7" transform="rotate(5 140 265)"/>
-              <ellipse cx="158" cy="272" rx="3" ry="9" fill="#8878C0" opacity="0.73" transform="rotate(-13 158 272)"/>
-
-              <!-- Chamomile flowers -->
-              <g transform="translate(103,155)"><circle r="6.5" fill="#DEAD50" opacity="0.82"/><circle r="3" fill="#ECC060" opacity="0.88"/><line x1="0" y1="-6.5" x2="-2" y2="-11" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/><line x1="6.5" y1="0" x2="11" y2="-2" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/><line x1="0" y1="6.5" x2="2" y2="11" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/><line x1="-6.5" y1="0" x2="-11" y2="2" stroke="#E8E0C0" stroke-width="1.4" opacity="0.65"/></g>
-              <g transform="translate(165,255)"><circle r="7" fill="#E0B848" opacity="0.78"/><circle r="3.5" fill="#EEC858" opacity="0.85"/><line x1="0" y1="-7" x2="-2.5" y2="-12" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/><line x1="7" y1="0" x2="12" y2="-2.5" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/><line x1="0" y1="7" x2="2.5" y2="12" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/><line x1="-7" y1="0" x2="-12" y2="2.5" stroke="#E8E0C0" stroke-width="1.4" opacity="0.6"/></g>
-
-              <!-- Small green leaves -->
-              <ellipse cx="75" cy="155" rx="9" ry="5" fill="#5A8040" opacity="0.6" transform="rotate(20 75 155)"/>
-              <ellipse cx="178" cy="215" rx="10" ry="5.5" fill="#509038" opacity="0.55" transform="rotate(-15 178 215)"/>
-              <ellipse cx="110" cy="300" rx="9" ry="5" fill="#5A8040" opacity="0.58" transform="rotate(10 110 300)"/>
-
-              <!-- Cream chunks (ashwagandha/honey pieces) -->
-              <rect x="135" y="180" width="10" height="8" rx="3" fill="#D4C898" opacity="0.7" transform="rotate(15 135 180)"/>
-              <rect x="75" y="218" width="9" height="7" rx="2.5" fill="#C8BC8A" opacity="0.65" transform="rotate(-20 75 218)"/>
-              <rect x="150" y="295" width="10" height="7" rx="2.5" fill="#D0C490" opacity="0.62" transform="rotate(10 150 295)"/>
-
-              <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="url(#mesh2)" opacity="1"/>
-            </g>
-
-            <path d="M60 95 L130 62 L200 95 L212 320 L130 348 L48 320 Z" fill="none" stroke="rgba(215,208,192,0.55)" stroke-width="1"/>
-            <path d="M68 97 L192 97" stroke="rgba(210,204,188,0.65)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M60 95 L130 62 L130 350 L48 320 Z" fill="url(#bagHL2)"/>
-            <path d="M55 318 L205 318" stroke="rgba(210,204,188,0.3)" stroke-width="1" stroke-dasharray="5,4"/>
-          </svg>
-        </div>
-
-        <div class="blend-info">
-          <span class="blend-num-lbl" data-it>03 · sera · sistema nervoso</span>
-          <span class="blend-num-lbl" data-en>03 · evening · nervous system</span>
-          <span class="blend-name">unwind</span>
-          <span class="blend-quote" data-it>"finalmente è silenzio, qui dentro"</span>
-          <span class="blend-quote" data-en>"it's finally quiet in here"</span>
-          <p class="blend-desc" data-it>Per il cervello delle 23 che non smette. L'ashwagandha abbassa il cortisolo. La L-theanine silenzia il rumore. La melissa lenisce dall'interno. La lavanda dice al tuo corpo che è al sicuro riposare.</p>
-          <p class="blend-desc" data-en>For the 11pm brain that won't stop. Ashwagandha lowers cortisol. L-theanine quiets the noise. Melissa soothes from the inside. Lavender tells your body it's safe to rest.</p>
-          <div class="blend-tags">
-            <span class="btag" data-it>lavanda</span><span class="btag" data-en>lavender</span>
-            <span class="btag" data-it>miele</span><span class="btag" data-en>honey</span>
-            <span class="btag" data-it>vaniglia</span><span class="btag" data-en>vanilla</span>
-            <span class="btag" data-it>camomilla</span><span class="btag" data-en>chamomile</span>
-            <span class="btag fn">ashwagandha</span>
-            <span class="btag fn">l-theanine</span>
-            <span class="btag fn">melissa</span>
-          </div>
-          <a href="#prezzi" class="blend-cta" data-it>scopri unwind</a>
-          <a href="#prezzi" class="blend-cta" data-en>discover unwind</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
 </section>
+
 
 <!-- ═══════════════════════════ PERCHÉ ═══════════════════════════ -->
 <section class="sec" id="perche">
@@ -1464,27 +1691,128 @@ const revObs = new IntersectionObserver(entries => {
 }, { threshold: 0.06 });
 document.querySelectorAll('.r').forEach(el => revObs.observe(el));
 
-/* ─── BLEND SCROLL — Apple style ─── */
-const blendsWrap = document.getElementById('blendsWrap');
-const panels = document.querySelectorAll('.blend-panel');
-const dots   = document.querySelectorAll('.bd');
-let curBlend = 0;
+/* ─── BLEND SCROLL — exploded bag, bande volanti ─── */
 
-function setBlend(idx) {
-  if (idx === curBlend) return;
-  panels[curBlend].classList.remove('active');
-  dots[curBlend].classList.remove('on');
-  curBlend = idx;
-  panels[curBlend].classList.add('active');
-  dots[curBlend].classList.add('on');
+// Per ogni blend section: anima le bande verso l'alto con scroll progress
+const blendSections = [
+  { id: 'bs0', cloudId: 'bcloud0', bagId: 'tbsvg0', labelId: 'blbl0', infoId: 'binfo0', progId: 'bprog0', dotId: 'bd0' },
+  { id: 'bs1', cloudId: 'bcloud1', bagId: 'tbsvg1', labelId: 'blbl1', infoId: 'binfo1', progId: 'bprog1', dotId: 'bd1' },
+  { id: 'bs2', cloudId: 'bcloud2', bagId: 'tbsvg2', labelId: 'blbl2', infoId: 'binfo2', progId: 'bprog2', dotId: 'bd2' },
+];
+
+// Mostra dots nav solo quando siamo nella sezione blend
+const blendDotsEl = document.getElementById('blendDots');
+const allBlendSections = blendSections.map(b => document.getElementById(b.id)).filter(Boolean);
+
+function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+// Posizioni iniziali delle bande (tutte partono da 0, poi salgono con scroll)
+// band-1 = più vicina alla bustina, parte per prima e sale poco
+// band-5 = più lontana, parte dopo e sale di più
+const bandBaseOffsets = [0, 0, 0, 0, 0]; // offset verticale iniziale in vh
+
+function animateBlend(section, scrolled, totalH) {
+  const cloud  = document.getElementById(section.cloudId);
+  const bagEl  = document.getElementById(section.bagId);
+  const label  = document.getElementById(section.labelId);
+  const info   = document.getElementById(section.infoId);
+  const prog   = document.getElementById(section.progId);
+
+  if (!cloud || !bagEl) return;
+
+  // progresso 0→1 dentro questa sezione
+  const p = clamp(scrolled / totalH, 0, 1);
+
+  // progress bar
+  if (prog) prog.style.width = (p * 100) + '%';
+
+  // Bustina: scala da 0.85 → 1 nei primi 15% dello scroll
+  const bagScale = 0.85 + clamp(p / 0.15, 0, 1) * 0.15;
+  const bagOpacity = clamp(p / 0.1, 0, 1);
+  bagEl.style.transform = `scale(${bagScale})`;
+  bagEl.style.opacity = bagOpacity;
+
+  // Nome blend sotto bustina: fade in al 15%
+  if (label) {
+    label.style.opacity = clamp((p - 0.12) / 0.12, 0, 1);
+  }
+
+  // Info panel destra: slide in al 20%
+  if (info) {
+    const infoP = clamp((p - 0.18) / 0.15, 0, 1);
+    info.style.opacity = infoP;
+    info.style.transform = `translateX(${(1 - infoP) * 20}px)`;
+  }
+
+  // Bande ingredienti: ciascuna sale con timing sfasato
+  // Band 1 (DOM index 4, la più bassa): inizia al 10%, max translateY -120px
+  // Band 2: inizia al 22%, max -200px
+  // Band 3: inizia al 34%, max -280px
+  // Band 4: inizia al 46%, max -360px
+  // Band 5: inizia al 58%, max -440px
+  const bandConfig = [
+    { start: 0.10, maxY: -110, maxOp: 1 },
+    { start: 0.22, maxY: -195, maxOp: 1 },
+    { start: 0.34, maxY: -278, maxOp: 1 },
+    { start: 0.46, maxY: -360, maxOp: 1 },
+    { start: 0.58, maxY: -440, maxOp: 1 },
+  ];
+
+  const bands = cloud.querySelectorAll('.ing-band');
+  bands.forEach((band, i) => {
+    const cfg = bandConfig[i] || bandConfig[4];
+    const bp = clamp((p - cfg.start) / 0.18, 0, 1);
+    // easing: ease-out cubic
+    const eased = 1 - Math.pow(1 - bp, 3);
+    const ty = cfg.maxY * eased;
+    const op = bp < 0.05 ? bp / 0.05 : 1;
+    band.style.transform = `translateY(${ty}px)`;
+    band.style.opacity = op;
+  });
+
+  // Al 95% scroll: tutto sfuma (transizione verso prossimo blend)
+  if (p > 0.88) {
+    const fade = 1 - clamp((p - 0.88) / 0.12, 0, 1);
+    cloud.style.opacity = fade;
+    bagEl.style.opacity = fade;
+    if (label) label.style.opacity = fade;
+    if (info) {
+      info.style.opacity = fade;
+    }
+  } else {
+    cloud.style.opacity = 1;
+  }
 }
+
+// Dots visibility
+function updateDots() {
+  let anyVisible = false;
+  blendSections.forEach((section, i) => {
+    const el = document.getElementById(section.id);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const active = rect.top <= 100 && rect.bottom >= window.innerHeight * 0.5;
+    const dot = document.getElementById(section.dotId);
+    if (dot) dot.classList.toggle('on', active);
+    if (active) anyVisible = true;
+  });
+  if (blendDotsEl) blendDotsEl.style.display = anyVisible ? 'flex' : 'none';
+}
+
 window.addEventListener('scroll', () => {
-  const rect = blendsWrap.getBoundingClientRect();
-  const scrolled = -rect.top;
-  if (scrolled < 0 || scrolled > blendsWrap.offsetHeight) return;
-  const segH = blendsWrap.offsetHeight / panels.length;
-  setBlend(Math.max(0, Math.min(Math.floor(scrolled / segH), panels.length - 1)));
+  blendSections.forEach(section => {
+    const el = document.getElementById(section.id);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const scrolled = -rect.top;
+    const totalH = el.offsetHeight - window.innerHeight;
+    animateBlend(section, scrolled, Math.max(totalH, 1));
+  });
+  updateDots();
 }, { passive: true });
+
+// Inizializza posizioni
+window.dispatchEvent(new Event('scroll'));
 </script>
 </body>
 </html>
